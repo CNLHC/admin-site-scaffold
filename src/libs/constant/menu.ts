@@ -5,7 +5,7 @@ const Menu: TMenuItem[] = [
     title: '任务列表',
     childItem: [],
     key: 'taskList',
-    route: 'taskList',
+    route: 'tasklist',
     icon:'schedule'
   },
   {
