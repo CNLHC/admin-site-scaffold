@@ -116,6 +116,7 @@ export default function TaskTable(props: Props) {
   const columns = getColumns(Actions);
   return (
     <Table
+      rowKey={r => r.taskid.toString()}
       columns={columns}
       dataSource={data.items}
       pagination={{
