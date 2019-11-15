@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
 import { TMenuItem } from '../../libs/types/menu';
 import MenuData from '../../libs/constant/menu';
 
@@ -15,10 +15,23 @@ const generateMenu = (menu: TMenuItem[], base = '/') => {
   return menu.map(e => {
     const route = `${base}${e.route}/`;
     if (e.childItem.length == 0) {
-      return <Menu.Item key={route}>{e.title}</Menu.Item>;
+      return (
+        <Menu.Item key={route}>
+          {e.icon ? <Icon type={e.icon} /> : null}
+          <span>{e.title}</span>
+        </Menu.Item>
+      );
     } else {
       return (
-        <SubMenu key={route} title={e.title}>
+        <SubMenu
+          key={route}
+          title={
+            <span>
+              {e.icon ? <Icon type={e.icon} /> : null}
+              <span>{e.title}</span>
+            </span>
+          }
+        >
           {generateMenu(e.childItem, route)}
         </SubMenu>
       );

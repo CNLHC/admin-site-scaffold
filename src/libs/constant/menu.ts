@@ -6,11 +6,13 @@ const Menu: TMenuItem[] = [
     childItem: [],
     key: 'taskList',
     route: 'taskList',
+    icon:'schedule'
   },
   {
     title: '工作台',
     key: 'workbench',
     route: 'workbench',
+    icon:'calendar',
     childItem: [
       {
         title: '产品管理',
@@ -42,18 +44,21 @@ const Menu: TMenuItem[] = [
     title: '分析结果',
     childItem: [],
     key: 'report',
+    icon:"dot-chart",
     route: 'report',
   },
   {
     title: 'QA资源',
     childItem: [],
     key: 'QAResource',
-    route: 'QAResource',
+    icon:'file-image',
+    route: 'QAResource'
   },
   {
     title: 'Proto解析',
     childItem: [],
     key: 'protoParse',
+    icon:'block',
     route: 'protoParse',
   },
 ];

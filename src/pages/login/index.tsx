@@ -18,10 +18,19 @@ const LoginColumn = styled(Col)`
 
 const LoginBox = styled.div`
   width: 100%;
-  background: #fff
+  background: #fff;
+  padding: 2rem 2rem 1rem 2rem;
+  border-radius: 0.5rem;
 `;
 
-const Page = props => {
+const TitleBox = styled.div`
+  font-size: 24pt;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 1em;
+`;
+
+const Page = () => {
   const handleSubmit = e => {
     console.log(e);
   };
@@ -29,6 +38,7 @@ const Page = props => {
     <RootRow gutter={{ xs: 4, sm: 8 }}>
       <LoginColumn xs={20} sm={10} lg={5}>
         <LoginBox>
+          <TitleBox>FastEval</TitleBox>
           <Form onSubmit={handleSubmit} className="login-form">
             <Form.Item>
               <Input
