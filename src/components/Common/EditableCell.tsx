@@ -1,49 +1,64 @@
-import React from 'react';
-import {useForm} from 'byte-form'
+import React, { useMemo, useContext, useState, forwardRef } from 'react';
+import { Request as UpdateReq } from '../../libs/API/update_product';
+import { Form, InputNumber, Input } from 'antd';
+import { EditableContext } from '../workbench /productmanage/EdiableTable';
+type TInputMethod = (props: {
+  value?: string;
+  onChange?: (v: string) => void;
+}) => JSX.Element;
 
-type TCellProps<T> = {
+type TCellProps<T = {}> = {
   children: JSX.Element[];
   className: string;
   editing: boolean;
   dataIndex: string;
-  InputMethod: (props: {
-    value: string;
-    onChange: (v: string) => void;
-  }) => JSX.Element;
+  InputMethod: TInputMethod;
   onClick: (e: any) => void;
   record: T;
 };
 
-const useEditableCell: <Record extends {}>() => [
+const useEditableCell: () => [
   React.Context<any>,
-  (props: TCellProps<Record>) => JSX.Element
+  (props: any) => JSX.Element
 ] = () => {
-  const EditCtx = React.createContext(undefined);
+  const Ctx = useMemo(() => React.createContext(undefined), []);
+  const EditableCell = useMemo(
+    () => props => {
+      const getInput = () => {
+        if (props.inputType === 'number') {
+          return <InputNumber />;
+        }
+        return <Input />;
+      };
+      const { getFieldDecorator } = useContext(Ctx);
 
-  const EditCell: <T extends {}>(props: TCellProps<T>) => JSX.Element = ({
-    record,
-    editing,
-    children,
-    dataIndex,
-    InputMethod,
-    ...rest
-  }) => {
-    return !editing ? (
-      <td {...rest}>{children}</td>
-    ) : (
-      <EditCtx.Consumer>
-        {({ onGatherData }) => (
-          <td>
-            <InputMethod
-              value={record[dataIndex]}
-              onChange={e => onGatherData(dataIndex, e)}
-            />
-          </td>
-        )}
-      </EditCtx.Consumer>
-    );
-  };
-  return [EditCtx, EditCell];
+      const {
+        editing,
+        dataIndex,
+        title,
+        inputType,
+        record,
+        index,
+        children,
+        ...restProps
+      } = props;
+
+      return (
+        <td {...restProps}>
+          {editing ? (
+            <Form.Item style={{ margin: 0 }}>
+              {getFieldDecorator(dataIndex)(getInput())}
+            </Form.Item>
+          ) : (
+            children
+          )}
+        </td>
+      );
+    },
+    []
+  );
+
+  return [Ctx, EditableCell];
 };
 
 export default useEditableCell;

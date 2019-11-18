@@ -3,8 +3,6 @@ import MainLayout from '../../components/Layout';
 import ProductTable from '../../components/workbench /productmanage/ProductTable';
 import { Response, Route as ProdAPI } from '../../libs/API/productlist';
 import Axios from 'axios';
-import { useForm } from 'byte-form';
-
 export default function productManage() {
   const [prodData, setProdData] = useState<Response>({
     code: 0,
@@ -13,16 +11,10 @@ export default function productManage() {
   useEffect(() => {
     Axios.get<Response>(ProdAPI).then(res => setProdData(res.data));
   }, []);
-  const [a, B] = useForm({});
 
   return (
     <MainLayout>
-      <B formMeta={[{
-        key:"a",
-        type:"input",
-
-      }]}/>
-      <ProductTable data={prodData} />
+      <ProductTable data={prodData.data} />
     </MainLayout>
   );
 }
