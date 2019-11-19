@@ -48,7 +48,7 @@ const getColumns: <T>(props: {
     !col.editable
       ? col
       : {
-        ...col,
+          ...col,
           onCell: record => ({
             record,
             dataIndex: col.dataIndex,
@@ -65,11 +65,15 @@ type TEditableTable<T> = (props: TableProps<T>) => JSX.Element;
 const getEditableTable: <T>(
   Actions: TActions<T>,
   Columns: EditableTableColumnProps<T>[],
-  TableProps: Omit<AntTableProps<T>, 'component' | 'columns' | 'dataSource'>
+  TableProps: Omit<AntTableProps<T>, 'component' | 'columns' | 'dataSource'> &
+    Required<Pick<AntTableProps<T>, 'rowKey'>>
 ) => TEditableTable<T> = (Actions, Columns, TableProps) => {
   return ({ data, form }) => {
     const [editingKey, setEditingKey] = useState(undefined);
-    const getKey = r => r.productID;
+    const getKey = record =>
+      typeof TableProps.rowKey === 'string'
+        ? record[TableProps.rowKey]
+        : TableProps.rowKey(record, 0);
     const isEditing = record => getKey(record) === editingKey;
     const cancel = () => setEditingKey(undefined);
     const edit = record => setEditingKey(getKey(record));
