@@ -1,45 +1,38 @@
-import React, { useMemo, useContext, useState, forwardRef } from 'react';
-import { Request as UpdateReq } from '../../libs/API/update_product';
-import { Form, InputNumber, Input } from 'antd';
-import { EditableContext } from '../workbench /productmanage/EdiableTable';
-type TInputMethod = (props: {
-  value?: string;
-  onChange?: (v: string) => void;
-}) => JSX.Element;
-
-type TCellProps<T = {}> = {
-  children: JSX.Element[];
-  className: string;
-  editing: boolean;
+import React, { useMemo, useContext } from 'react';
+import { Form } from 'antd';
+import { WrappedFormUtils, GetFieldDecoratorOptions } from 'antd/lib/form/Form';
+export type TCellProps<T> = {
+  record;
   dataIndex: string;
-  InputMethod: TInputMethod;
-  onClick: (e: any) => void;
-  record: T;
+  editing: boolean;
+  index: number;
+  getInput: () => JSX.Element;
+  children: (props: any) => JSX.Element;
+  getFieldConf?: (record: T, dataIndex: string) => GetFieldDecoratorOptions;
 };
 
-const useEditableCell: () => [
-  React.Context<any>,
-  (props: any) => JSX.Element
-] = () => {
-  const Ctx = useMemo(() => React.createContext(undefined), []);
+const useEditableCell: <T>(
+  data: T
+) => [
+  React.Context<WrappedFormUtils<T>>,
+  (props: TCellProps<T>) => JSX.Element
+] = data => {
+  const Ctx = useMemo(
+    () => React.createContext<WrappedFormUtils<typeof data>>(undefined),
+    []
+  );
   const EditableCell = useMemo(
-    () => props => {
-      const getInput = () => {
-        if (props.inputType === 'number') {
-          return <InputNumber />;
-        }
-        return <Input />;
-      };
+    () => (props: TCellProps<typeof data>) => {
       const { getFieldDecorator } = useContext(Ctx);
 
       const {
         editing,
         dataIndex,
-        title,
-        inputType,
         record,
         index,
         children,
+        getInput,
+        getFieldConf,
         ...restProps
       } = props;
 
@@ -47,7 +40,10 @@ const useEditableCell: () => [
         <td {...restProps}>
           {editing ? (
             <Form.Item style={{ margin: 0 }}>
-              {getFieldDecorator(dataIndex)(getInput())}
+              {getFieldDecorator(
+                dataIndex,
+                getFieldConf ? getFieldConf(record, dataIndex) : {}
+              )(getInput())}
             </Form.Item>
           ) : (
             children
