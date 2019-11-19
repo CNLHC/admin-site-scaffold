@@ -5,6 +5,7 @@ import useEditableCell, { TCellProps } from './EditableCell';
 import { ColumnProps } from 'antd/lib/table';
 import { FormComponentProps } from 'antd/lib/form';
 import { WrappedFormUtils, GetFieldDecoratorOptions } from 'antd/lib/form/Form';
+import { TableProps as AntTableProps } from 'antd/lib/table';
 
 interface TActionProps<T> {
   record: T;
@@ -47,7 +48,7 @@ const getColumns: <T>(props: {
     !col.editable
       ? col
       : {
-          ...col,
+        ...col,
           onCell: record => ({
             record,
             dataIndex: col.dataIndex,
@@ -63,8 +64,9 @@ type TEditableTable<T> = (props: TableProps<T>) => JSX.Element;
 
 const getEditableTable: <T>(
   Actions: TActions<T>,
-  Columns: EditableTableColumnProps<T>[]
-) => TEditableTable<T> = (Actions, Columns) => {
+  Columns: EditableTableColumnProps<T>[],
+  TableProps: Omit<AntTableProps<T>, 'component' | 'columns' | 'dataSource'>
+) => TEditableTable<T> = (Actions, Columns, TableProps) => {
   return ({ data, form }) => {
     const [editingKey, setEditingKey] = useState(undefined);
     const getKey = r => r.productID;
@@ -95,14 +97,10 @@ const getEditableTable: <T>(
     return (
       <Ctx.Provider value={form}>
         <Table
-          rowKey={e => e.productID}
           components={components}
-          bordered
-          dataSource={data}
           columns={columns}
-          pagination={{
-            onChange: cancel,
-          }}
+          dataSource={data}
+          {...TableProps}
         />
       </Ctx.Provider>
     );
