@@ -26,7 +26,7 @@ interface TableProps<T> extends FormComponentProps<T> {
 export interface EditableTableColumnProps<T> extends ColumnProps<T> {
   editable?: boolean;
   onCell?: (record: T) => Omit<TCellProps<T>, 'children'>;
-  inputField: JSX.Element;
+  inputField?: JSX.Element;
   getFieldConf?: (record: T, dataIndex: string) => GetFieldDecoratorOptions;
 }
 
@@ -45,7 +45,7 @@ const getColumns: <T>(props: {
       render: (_, record) => <Actions record={record} />,
     },
   ] as EditableTableColumnProps<any>[]).map(col =>
-    !col.editable
+    !col.editable || !col.inputField
       ? col
       : {
           ...col,

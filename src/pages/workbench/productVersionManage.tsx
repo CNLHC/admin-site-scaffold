@@ -11,7 +11,7 @@ import getEditableTable, {
 } from '../../components/Common/EdiableTable';
 import styled from 'styled-components';
 import { Button, Form, message, Popconfirm, Select } from 'antd';
-import { GetColumns } from '../../components/workbench /versionManage';
+import { GetColumns } from '../../components/workbench/versionManage';
 import { APIListProduct } from '../../libs/API/productlist';
 type Data = VersionResponse['data'][0];
 
