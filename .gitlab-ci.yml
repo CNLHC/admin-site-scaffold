@@ -1,14 +1,16 @@
+stages:
+  - build
+  - deploy 
+
 build:
-  stage:
-    - build
+  stage: build
   tags:
     - build
   script:
     - docker build . -t localhost:5000/fasteval-jacinth:${CI_COMMIT_SHA::8}
 
 deploy:
-  stage:
-    - deploy
+  stage: deploy
   tags:
     - deploy
   script:
