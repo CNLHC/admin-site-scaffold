@@ -2,3 +2,4 @@ node_modules/
 .jacinth/
 .next/
 public/
+Dockerfile

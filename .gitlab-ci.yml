@@ -1,0 +1,16 @@
+build:
+  stage:
+    - build
+  tags:
+    - build
+  script:
+    - docker build . -t localhost:5000/fasteval-jacinth:${CI_COMMIT_SHA::8}
+
+deploy:
+  stage:
+    - deploy
+  tags:
+    - deploy
+  script:
+    - docker rm -f fasteval || true
+    - docker run --rm -d -p 3000:3002 localhost:5000/fasteval-jacinth:${CI_COMMIT_SHA::8}
