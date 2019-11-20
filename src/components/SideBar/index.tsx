@@ -2,12 +2,13 @@ import React, { useMemo, useState } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { TMenuItem } from '../../libs/types/menu';
 import MenuData from '../../libs/constant/menu';
-import Route, { withRouter, RouterProps } from 'next/router';
+import Route, { withRouter } from 'next/router';
+import { WithRouterProps } from 'next/dist/client/with-router';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-interface TProps {
+interface TProps extends WithRouterProps {
   collapse: boolean;
   onCollapse: () => void;
 }
