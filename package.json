@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@jacinthjs/jacinth-dev": "git+ssh://git@github.com:CNLHC/jacinth-core.git#dev",
+    "@jacinthjs/jacinth-dev": "git+https://github.com/CNLHC/jacinth-core#dev",
     "@types/mongodb": "^3.3.10",
     "@types/next": "^8.0.7",
     "@types/node": "^12.12.6",
