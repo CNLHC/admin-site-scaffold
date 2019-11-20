@@ -7,7 +7,7 @@ build:
   tags:
     - build
   script:
-    - docker build . -t localhost:5000/fasteval-jacinth:${CI_COMMIT_SHA::8}
+    - docker build . --no-cache  -t localhost:5000/fasteval-jacinth:${CI_COMMIT_SHA::8}
 
 deploy:
   stage: deploy
@@ -15,4 +15,4 @@ deploy:
     - build
   script:
     - docker rm -f fasteval || true
-    - docker run --rm -d -p 3000:3002 localhost:5000/fasteval-jacinth:${CI_COMMIT_SHA::8}
+    - docker run --rm -d -p 3000:3000 --name fasteval-jacinth localhost:5000/fasteval-jacinth:${CI_COMMIT_SHA::8}
