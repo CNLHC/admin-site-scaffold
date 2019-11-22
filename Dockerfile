@@ -4,7 +4,7 @@ RUN apk update && apk upgrade && \
     apk add --no-cache git openssh
 
 COPY . .
-RUN yarn 
+RUN NODE_OPTIONS=--max_old_space_size=4096 yarn 
 RUN yarn add git+https://github.com/CNLHC/jacinth-core#dev
 RUN yarn jacinth build
 CMD yarn jacinth start 
