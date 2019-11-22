@@ -17,10 +17,11 @@ import {
   Response as TVideoResp,
   Route as VideoAPI,
 } from '../../libs/API/get_video';
+import { withAuthCheck } from '../../libs/withCSRAuth';
 
 const RootLayout = styled(MainLayout)``;
 
-export default () => {
+function Page() {
   const [pagination, setPagination] = useState<{
     page: number;
     pageSize: number;
@@ -109,4 +110,6 @@ export default () => {
       </div>
     </RootLayout>
   );
-};
+}
+
+export default withAuthCheck(Page);

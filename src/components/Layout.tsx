@@ -33,7 +33,6 @@ MainLayout.getInitialProps = async function() {
     username: 'foo',
     password: 'bar',
   });
-  console.log(res.data);
 };
 
 export default MainLayout;

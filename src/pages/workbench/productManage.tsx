@@ -14,6 +14,7 @@ import getEditableTable, {
 } from '../../components/Common/EdiableTable';
 import styled from 'styled-components';
 import { Button, Form, Input, Select, message, Popconfirm } from 'antd';
+import { withAuthCheck } from '../../libs/withCSRAuth';
 type Data = Response['data'][0];
 const Columns: EditableTableColumnProps<Data>[] = [
   {
@@ -69,7 +70,7 @@ const ButtonBox = styled.div`
   display: flex;
   justify-content: space-around;
 `;
-export default function productManage() {
+function productManage() {
   const [prodData, setProdData] = useState<Response>({
     code: 0,
     data: [],
@@ -159,3 +160,4 @@ export default function productManage() {
     </MainLayout>
   );
 }
+export default withAuthCheck(productManage);

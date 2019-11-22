@@ -10,6 +10,7 @@ import {
   APIListVideo,
 } from '../../libs/API/videolist';
 import styled from 'styled-components';
+import { withAuthCheck } from '../../libs/withCSRAuth';
 type Data = VideoResponse['data'][0];
 
 const ButtonBox = styled.div`
@@ -17,7 +18,7 @@ const ButtonBox = styled.div`
   justify-content: space-around;
 `;
 
-export default function taskList() {
+function taskList() {
   const [videos, setVideos] = useState<VideoResponse>({
     code: 0,
     data: [],
@@ -70,3 +71,5 @@ export default function taskList() {
     </MainLayout>
   );
 }
+
+export default withAuthCheck(taskList);

@@ -5,6 +5,7 @@ import { message, Table, Button } from 'antd';
 import GetColumns from '../../components/workbench/testversion';
 import MainLayout from '../../components/Layout';
 import styled from 'styled-components';
+import { withAuthCheck } from '../../libs/withCSRAuth';
 type data = TestVersionResponse['data'][0];
 const VertBox = styled.div`
   display: flex;
@@ -19,7 +20,7 @@ const ItemBox = styled.div`
   align-items: center;
 `;
 
-export default function testVersion() {
+function testVersion() {
   const [versions, setVersions] = useState<TestVersionResponse>({
     code: 0,
     data: [],
@@ -62,3 +63,5 @@ export default function testVersion() {
     </MainLayout>
   );
 }
+
+export default withAuthCheck(testVersion);

@@ -18,7 +18,6 @@ const searchRouteItem = (
   cumulative = '/',
   openCumu: string[] = []
 ) => {
-  console.log('expensive');
   const first = ingredients.shift();
   if (first) {
     const Idx = menu.find(e => e.route === first);

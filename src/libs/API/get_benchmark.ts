@@ -42,8 +42,8 @@ export interface Item {
   taskname: string;
   tasktime: string;
   tasktype: Tasktype;
-  taskversion: Taskversion;
-  videoname: Videoname;
+  taskversion: string;
+  videoname: string;
 }
 
 export enum Product {
@@ -55,13 +55,3 @@ export enum Tasktype {
   车牌抓拍 = '车牌抓拍',
 }
 
-export enum Taskversion {
-  // eslint-disable-next-line
-  B2RFW2019_1117_RCImg = 'B2R_FW_2019_1117_RC.img',
-}
-
-export enum Videoname {
-  // eslint-disable-next-line
-  CarlicenseXiaoquH264 = 'carlicense_xiaoqu.h264',
-  Low = 'low',
-}

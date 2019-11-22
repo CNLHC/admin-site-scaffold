@@ -7,9 +7,10 @@ import {
 } from '../../libs/API/get_benchmark';
 import CaptureTable from '../../components/Report/capture';
 import { message } from 'antd';
+import { withAuthCheck } from '../../libs/withCSRAuth';
 type Data = BenchmarkResponse['data']['items'][0];
 
-export default function capture() {
+function capture() {
   const [benchmark, setBenchmark] = useState<Data[]>([]);
   const [count, setCounts] = useState<number>(0);
   const [payload, setPayload] = useState<BenchmarkRequest>({
@@ -33,7 +34,6 @@ export default function capture() {
     []
   );
   useEffect(() => GetBenchmark(payload), []);
-  console.log(111, benchmark, count);
 
   return (
     <MainLayout>
@@ -41,3 +41,5 @@ export default function capture() {
     </MainLayout>
   );
 }
+
+export default withAuthCheck(capture);

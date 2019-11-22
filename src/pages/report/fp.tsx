@@ -7,9 +7,10 @@ import {
   Request,
 } from '../../libs/API/get_fp_benchmark';
 import { Table, message } from 'antd';
+import { withAuthCheck } from '../../libs/withCSRAuth';
 type Data = Response['data'][0];
 
-export default function capture() {
+function capture() {
   const [bench, setBench] = useState<Data[]>([]);
   const [payload, setPayload] = useState<Request>({ taskids: [] });
   const columns = useMemo(() => GetColumns(), []);
@@ -30,3 +31,4 @@ export default function capture() {
     </MainLayout>
   );
 }
+export default withAuthCheck(capture);

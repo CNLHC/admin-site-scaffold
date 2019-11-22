@@ -25,36 +25,20 @@ export interface Datum {
   dongwulian: Basenum | number;
   fpallnum: Basenum | number;
   hounaoshao: Basenum | number;
-  product: Product;
+  product: string;
   qita: Basenum | number;
   taskid: number;
   taskname: string;
   tasktime: string;
   tasktype: Tasktype;
   taskversion: string;
-  videoname: Videoname;
+  videoname: string;
 }
 
 export enum Basenum {
   NA = 'N/A',
 }
 
-export enum Product {
-  B2R = 'B2R',
-  Bp0NVR = 'BP0_NVR',
-  Cp3 = 'CP3',
-  Empty = '',
-  G3 = 'G3',
-  Lc = 'LC',
-}
-
 export enum Tasktype {
   FP = 'fp',
-}
-
-export enum Videoname {
-  CatsAndDogsMp4 = 'cats_and_dogs.mp4',
-  Lookslikeaface = 'lookslikeaface',
-  SjsVideo = 'sjs_video',
-  TestFP = 'test_fp',
 }

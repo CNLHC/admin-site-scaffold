@@ -13,13 +13,14 @@ import styled from 'styled-components';
 import { Button, Form, message, Popconfirm, Select } from 'antd';
 import { GetColumns } from '../../components/workbench/versionManage';
 import { APIListProduct } from '../../libs/API/productlist';
+import { withAuthCheck } from '../../libs/withCSRAuth';
 type Data = VersionResponse['data'][0];
 
 const ButtonBox = styled.div`
   display: flex;
   justify-content: space-around;
 `;
-export default function versionManage() {
+function versionManage() {
   const [versionData, setVersionData] = useState<VersionResponse>({
     code: 0,
     data: [],
@@ -80,11 +81,9 @@ export default function versionManage() {
     );
   };
   const Columns = useMemo(() => {
-    console.log(prods);
     return GetColumns(
       <Select style={{ minWidth: '10em', width: '100%' }}>
         {prods.data.map(e => {
-          console.log(111, e);
           return (
             <Select.Option key={e.productID} value={e.product}>
               {e.product}
@@ -122,3 +121,5 @@ export default function versionManage() {
     </MainLayout>
   );
 }
+
+export default withAuthCheck(versionManage);

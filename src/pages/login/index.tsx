@@ -1,5 +1,8 @@
-import { Input, Button, Row, Col, Form, Icon, Checkbox } from 'antd';
+import { Input, Button, Row, Col, Form, Icon, Checkbox, message } from 'antd';
 import styled from 'styled-components';
+import { FormProps } from 'antd/lib/form';
+import Axios from 'axios';
+import Router from 'next/router';
 
 const RootRow = styled(Row)`
   width: 100%;
@@ -30,9 +33,22 @@ const TitleBox = styled.div`
   margin-bottom: 1em;
 `;
 
-const Page = () => {
+const Page = ({ form }: FormProps) => {
+  const { getFieldDecorator } = form;
   const handleSubmit = e => {
-    console.log(e);
+    e.preventDefault();
+    form.validateFields((err, value) => {
+      if (err) return;
+      Axios.post('/_auth/getToken', value)
+        .then(res => {
+          sessionStorage.setItem('jwt', res.data.token);
+          Router.replace('/index');
+        })
+        .catch(e => {
+          form.resetFields();
+          return message.error('登陆错误');
+        });
+    });
   };
   return (
     <RootRow gutter={{ xs: 4, sm: 8 }}>
@@ -41,21 +57,25 @@ const Page = () => {
           <TitleBox>FastEval</TitleBox>
           <Form onSubmit={handleSubmit} className="login-form">
             <Form.Item>
-              <Input
-                prefix={
-                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-                placeholder="用户名"
-              />
+              {getFieldDecorator('username', { rules: [{ required: true }] })(
+                <Input
+                  prefix={
+                    <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  placeholder="用户名"
+                />
+              )}
             </Form.Item>
             <Form.Item>
-              <Input
-                prefix={
-                  <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-                type="password"
-                placeholder="密码"
-              />
+              {getFieldDecorator('password', { rules: [{ required: true }] })(
+                <Input
+                  prefix={
+                    <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
+                  }
+                  type="password"
+                  placeholder="密码"
+                />
+              )}
             </Form.Item>
             <Form.Item>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -65,7 +85,12 @@ const Page = () => {
                 </a>
               </div>
               <div>
-                <Button block type="primary" className="login-form-button">
+                <Button
+                  block
+                  type="primary"
+                  className="login-form-button"
+                  onClick={handleSubmit}
+                >
                   登陆
                 </Button>
                 <a href="">注册</a>
@@ -78,4 +103,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Form.create()(Page);
