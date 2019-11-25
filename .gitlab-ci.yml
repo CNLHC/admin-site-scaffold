@@ -14,5 +14,5 @@ deploy:
   tags:
     - build
   script:
-    - docker rm -f fasteval || true
+    - docker rm -f fasteval-jacinth || true
     - docker run --rm -d -p 3000:3000 --name fasteval-jacinth localhost:5000/fasteval-jacinth:${CI_COMMIT_SHA::8}
