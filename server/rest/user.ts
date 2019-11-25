@@ -37,7 +37,7 @@ const foo: TPlugin<{}> = async (app, _opt) => {
   app.post(
     '/_auth/check',
     {
-      preHandler: [app.auth([])],
+      preHandler: [],
     },
     async (req, res) => {
       try {
