@@ -1,15 +1,19 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useContext } from 'react';
 import Axios from 'axios';
 import Router from 'next/router';
 import MainLayout from '../components/Layout';
+import { CSRAuthStateCtx, setAuthState } from './auth/state';
 
 export const withAuthCheck = PageComponent => {
   const Wrapper = (props: any) => {
     const [auth, setAuth] = useState<undefined | boolean>(undefined);
+    const getState = useContext(CSRAuthStateCtx);
+    const authState = getState();
+
     const checkAuth = useCallback(jwt => {
-      console.log("check")
+      console.log('check');
       Axios.post(
-        '/_auth/check',
+        '/api/check',
         {},
         {
           headers: {
@@ -17,8 +21,12 @@ export const withAuthCheck = PageComponent => {
           },
         }
       )
-        .then(() => setAuth(true))
+        .then(() => {
+          setAuthState(true);
+          return setAuth(true);
+        })
         .catch(() => {
+          setAuthState(false);
           setAuth(false);
           Router.push('/login');
         });
@@ -26,8 +34,8 @@ export const withAuthCheck = PageComponent => {
 
     useEffect(() => checkAuth(sessionStorage.getItem('jwt')), []);
 
-    const PageLoading = <MainLayout> Loading</MainLayout>;
-    const Page403 = <MainLayout> 403</MainLayout>;
+    const PageLoading = authState ? <MainLayout></MainLayout> : null;
+    const Page403 = authState ? <MainLayout> 403</MainLayout> : <p>403</p>;
 
     switch (auth) {
       case undefined:

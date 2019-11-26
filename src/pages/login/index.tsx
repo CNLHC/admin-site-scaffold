@@ -39,8 +39,9 @@ const Page = ({ form }: FormProps) => {
     e.preventDefault();
     form.validateFields((err, value) => {
       if (err) return;
-      Axios.post('/_auth/getToken', value)
+      Axios.post('/api/login', value)
         .then(res => {
+          console.log(`sttOken ${res.data.token}`);
           sessionStorage.setItem('jwt', res.data.token);
           Router.replace('/index');
         })
