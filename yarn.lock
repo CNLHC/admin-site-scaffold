@@ -875,10 +875,32 @@
   resolved "https://registry.npm.taobao.org/@emotion/unitless/download/@emotion/unitless-0.7.4.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40emotion%2Funitless%2Fdownload%2F%40emotion%2Funitless-0.7.4.tgz#a87b4b04e5ae14a88d48ebef15015f6b7d1f5677"
   integrity sha1-qHtLBOWuFKiNSOvvFQFfa30fVnc=
 
-"@jacinthjs/jacinth-dev@0.0.8":
-  version "0.0.8"
-  resolved "https://registry.npmjs.org/@jacinthjs/jacinth-dev/-/jacinth-dev-0.0.8.tgz#024fef471fe1b12512338d1dda144af949f84d39"
-  integrity sha512-eqDi9PL9Hc2HAYp7A0d9wRlScg6oJsnT/9Hr/+HwO6/79PKFpj+lkCojf49/GDipcOXoZ9Phm5UMt6CcPi9rgw==
+"@jacinthjs/jacinth-dev@file:../../FOSS/jacinth/packages/jacinth":
+  version "0.0.9"
+  dependencies:
+    "@babel/runtime" "^7.7.2"
+    "@babel/runtime-corejs2" "^7.7.2"
+    "@zeit/next-css" "^1.0.1"
+    babel-preset-minify "^0.5.1"
+    chalk "^2.4.2"
+    chokidar "^3.3.0"
+    cli "^1.0.1"
+    commander "^4.0.0"
+    debounce "^1.2.0"
+    del "^5.1.0"
+    fastify "^2.10.0"
+    fastify-auth "^0.6.0"
+    fastify-cookie "^3.2.0"
+    fastify-jwt "^1.2.0"
+    fastify-multipart "^1.0.2"
+    fastify-plugin "^1.6.0"
+    fastify-session "^3.1.0"
+    glob "^7.1.6"
+    next latest
+    winston "^3.2.1"
+
+"@jacinthjs/jacinth-dev@file:/home/liuhanchi/FOSS/jacinth/packages/jacinth/":
+  version "0.0.9"
   dependencies:
     "@babel/runtime" "^7.7.2"
     "@babel/runtime-corejs2" "^7.7.2"

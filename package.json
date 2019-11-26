@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@jacinthjs/jacinth-dev": "0.0.8",
+    "@jacinthjs/jacinth-dev": "file:/home/liuhanchi/FOSS/jacinth/packages/jacinth/",
     "@types/mongodb": "^3.3.10",
     "@types/node": "^12.12.6",
     "@types/react": "^16.9.11",
