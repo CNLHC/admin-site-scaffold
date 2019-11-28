@@ -5,7 +5,7 @@ WORKDIR /fasteval_jacinth
 COPY . .
 RUN  yarn 
 RUN yarn jacinth build
-CMD yarn jacinth start 
+CMD NODE_ENV=production yarn jacinth start 
 
 
 
