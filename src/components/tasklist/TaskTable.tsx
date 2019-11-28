@@ -91,7 +91,14 @@ export default function TaskTable(props: Props) {
       case '识别':
         return (
           <ButtonBox>
-            <Button type={'primary'}>识别标注</Button>
+            <Button
+              type={'primary'}
+              onClick={() =>
+                router.push(`/tasklist/RecogLabel?id=${props.data.taskid}`)
+              }
+            >
+              识别标注
+            </Button>
           </ButtonBox>
         );
       case 'fp':
@@ -99,7 +106,9 @@ export default function TaskTable(props: Props) {
           <ButtonBox>
             <Button
               type={'primary'}
-              onClick={() => router.push(`/tasklist/fp?id=${props.data.taskid}`)}
+              onClick={() =>
+                router.push(`/tasklist/fp?id=${props.data.taskid}`)
+              }
             >
               FP标注
             </Button>
@@ -111,11 +120,19 @@ export default function TaskTable(props: Props) {
           <ButtonBox>
             <Button
               type={'primary'}
-              onClick={() => router.push(`/tasklist/fp?id=${props.data.taskid}`)}
+              onClick={() =>
+                router.push(`/tasklist/fp?id=${props.data.taskid}`)
+              }
             >
               FP标注
             </Button>
-            <Button>标注</Button>
+            <Button
+              onClick={() =>
+                router.push(`/tasklist/label?id=${props.data.taskid}`)
+              }
+            >
+              标注
+            </Button>
             <Button style={{ background: '#389e0d', color: '#fff' }}>
               检查
             </Button>
