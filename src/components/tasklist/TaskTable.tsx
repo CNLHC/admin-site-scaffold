@@ -4,6 +4,7 @@ import { Response } from '../../libs/API/tasklist';
 import { Request as DeleteReq } from '../../libs/API/delete_task';
 import { ColumnProps } from 'antd/lib/table';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
 
 type TData = Response['data']['items'][0];
 
@@ -84,6 +85,7 @@ interface Props {
 }
 
 export default function TaskTable(props: Props) {
+  const router = useRouter();
   const Actions: TActions = props => {
     switch (props.data.tasktype) {
       case '识别':
@@ -95,14 +97,24 @@ export default function TaskTable(props: Props) {
       case 'fp':
         return (
           <ButtonBox>
-            <Button type={'primary'}>FP标注</Button>
+            <Button
+              type={'primary'}
+              onClick={() => router.push(`/tasklist/fp?id=${props.data.taskid}`)}
+            >
+              FP标注
+            </Button>
             <Button>检查</Button>
           </ButtonBox>
         );
       default:
         return (
           <ButtonBox>
-            <Button type={'primary'}>FP标注</Button>
+            <Button
+              type={'primary'}
+              onClick={() => router.push(`/tasklist/fp?id=${props.data.taskid}`)}
+            >
+              FP标注
+            </Button>
             <Button>标注</Button>
             <Button style={{ background: '#389e0d', color: '#fff' }}>
               检查

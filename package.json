@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@jacinthjs/jacinth-dev": "0.0.11",
+    "@types/chunk": "^0.0.0",
+    "@types/lodash": "^4.14.149",
     "@types/mongodb": "^3.3.10",
     "@types/node": "^12.12.6",
     "@types/react": "^16.9.11",
@@ -12,6 +14,7 @@
     "fastify-auth": "^0.6.0",
     "fastify-jwt": "^1.2.0",
     "fastify-mongodb": "^2.0.0",
+    "lodash": "^4.17.15",
     "mongodb": "^3.3.4",
     "react": "^16.12.0",
     "react-dom": "^16.11.0",
