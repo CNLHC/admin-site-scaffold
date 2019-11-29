@@ -112,7 +112,13 @@ export default function TaskTable(props: Props) {
             >
               FP标注
             </Button>
-            <Button>检查</Button>
+            <Button
+              onClick={() =>
+                router.push(`/tasklist/check?id=${props.data.taskid}`)
+              }
+            >
+              检查
+            </Button>
           </ButtonBox>
         );
       default:
@@ -133,7 +139,12 @@ export default function TaskTable(props: Props) {
             >
               标注
             </Button>
-            <Button style={{ background: '#389e0d', color: '#fff' }}>
+            <Button
+              style={{ background: '#389e0d', color: '#fff' }}
+              onClick={() =>
+                router.push(`/tasklist/check?id=${props.data.taskid}`)
+              }
+            >
               检查
             </Button>
           </ButtonBox>

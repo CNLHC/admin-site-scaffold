@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Button, Col, Row, Icon } from 'antd';
 import { ColProps } from 'antd/lib/col';
+import { StaticRoot } from '../../libs/constant/conf';
 
 export const getId = (router: any) => {
   const idstr: string | string[] | undefined = router.query.id;
@@ -32,7 +33,6 @@ export const ImageRow = styled(Row)`
   flex-direction: row;
 `;
 export const ImageCol = styled(Col)`
-  height: 15rem;
   width: 15rem;
   display: flex;
   justify-content: space-around;
@@ -42,6 +42,7 @@ export const ImageCol = styled(Col)`
   img {
     height: 100%;
     width: auto;
+    max-width: 15rem;
     transition: all 0.2s ease-in-out;
   }
   &:hover {
@@ -68,7 +69,7 @@ export const CheckAbleImage = ({
   ColProps,
 }: TImage) => (
   <ImageCol {...ColProps} onClick={() => onCheck(checked)}>
-    <img src={imageUrl} />
+    <img src={`${StaticRoot}${imageUrl}`} />
     <BigIcon
       type="check-circle"
       style={{ color: checked ? '#73d13d' : '#e8e8e8' }}

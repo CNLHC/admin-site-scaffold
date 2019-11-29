@@ -875,10 +875,10 @@
   resolved "https://registry.npm.taobao.org/@emotion/unitless/download/@emotion/unitless-0.7.4.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40emotion%2Funitless%2Fdownload%2F%40emotion%2Funitless-0.7.4.tgz#a87b4b04e5ae14a88d48ebef15015f6b7d1f5677"
   integrity sha1-qHtLBOWuFKiNSOvvFQFfa30fVnc=
 
-"@jacinthjs/jacinth-dev@0.0.13":
-  version "0.0.13"
-  resolved "https://registry.npmjs.org/@jacinthjs/jacinth-dev/-/jacinth-dev-0.0.13.tgz#548ae39dcb23ea887534d7fc41ecdc0bbdba2fb5"
-  integrity sha512-rBqH2MtzSilMwVb5uYSFX5Hjxx3TXqcVGeSdRRLXEhHvnq6GSglMO775cWKHNeSegqFa64gDZRWzNuKApwnglg==
+"@jacinthjs/jacinth-dev@0.0.14":
+  version "0.0.14"
+  resolved "https://registry.npmjs.org/@jacinthjs/jacinth-dev/-/jacinth-dev-0.0.14.tgz#a513654debff647656ad31533a6632058c2ae991"
+  integrity sha512-q/7QF+hbAwkoyx4Jr6QqyIqjScImYonW4yi151/kufJ3v+Ev/vc7jAWPH2UlxyprFETnq97S627aMJvjEJOOpg==
   dependencies:
     "@babel/runtime" "^7.7.2"
     "@babel/runtime-corejs2" "^7.7.2"

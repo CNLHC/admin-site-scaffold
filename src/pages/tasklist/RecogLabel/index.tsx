@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import RadioGroup from 'antd/lib/radio/group';
 import { StaticRoot } from '../../../libs/constant/conf';
 import { APICommitRecog } from '../../../libs/API/commit_recog';
+import ImageDiff from '../../../components/tasklist/ImageDiff';
 
 type data = Response['data']['items'];
 interface TImageBox {
@@ -34,24 +35,6 @@ const RecogBoxRoot = styled.div`
   }
 `;
 
-const DiffBox = styled.div`
-  padding: 0.5rem;
-  width: 16rem;
-  display: flex;
-  justify-content: flex-start;
-  cursor: pointer;
-  height: 100%;
-  img {
-    width: auto;
-  }
-`;
-const DiffImgWrapper = styled.div`
-  height: 100%;
-  img {
-    height: 100%;
-    width: auto;
-  }
-`;
 const RadioG = styled(RadioGroup)`
   display: flex;
   flex-direction: column;
@@ -64,18 +47,13 @@ const RecogCard = ({ data, onLabel }: TImageBox) => {
     <RecogBoxRoot
       style={{ background: data.dup && data.dup > 1 ? '#ffe7ba' : null }}
     >
-      <DiffBox
+      <ImageDiff
         onClick={() =>
           onLabel(data.label === 'wrong' ? Label.Right : Label.Wrong)
         }
-      >
-        <DiffImgWrapper>
-          <img src={`${StaticRoot}${data.base}`} />
-        </DiffImgWrapper>
-        <DiffImgWrapper>
-          <img src={`${StaticRoot}${data.cap}`} />
-        </DiffImgWrapper>
-      </DiffBox>
+        leftUrl={`${StaticRoot}${data.base}`}
+        rightUrl={`${StaticRoot}${data.cap}`}
+      />
       <RadioG value={data.label} onChange={e => onLabel(e.target.value)}>
         <Radio value={'right' as Label}>正确识别</Radio>
         <Radio value={'wrong' as Label}>错误识别</Radio>
@@ -87,8 +65,8 @@ const RecogCard = ({ data, onLabel }: TImageBox) => {
 export default function index() {
   const [data, setData] = useState<{ [key: string]: data[0] }>();
   const router = useRouter();
+  const id = getId(router);
   useEffect(() => {
-    const id = getId(router);
     if (id) {
       APIGetRecog(id)
         .then(res =>
@@ -101,7 +79,7 @@ export default function index() {
         )
         .catch(() => message.error('网络错误'));
     }
-  }, []);
+  }, [id]);
   const Entry = data ? Object.entries(data) : [];
   const TotalCount = Entry.length;
   const RightCount = Entry.filter(([k, v]) => v.label === Label.Right).length;

@@ -16,31 +16,58 @@ import CheckableTag from 'antd/lib/tag/CheckableTag';
 import { StaticRoot } from '../../../libs/constant/conf';
 import styled from 'styled-components';
 import LabelBox from '../../../components/tasklist/label/LabelBox';
+import { APICommit } from '../../../libs/API/commit';
+import { message, Modal } from 'antd';
 
 type data = Response['data'];
 export default function index() {
   const [taskInfos, setTaskinfo] = useState<TaskInfo[]>([]);
   const [meta, setMeta] = useState<data | undefined>(undefined);
   const router = useRouter();
-  console.log(router.query);
   const id = router.query.id ? (router.query.id as string) : undefined;
-  console.log(id);
+  const Jump = () =>
+    Modal.warning({
+      title: '已经完成标注',
+      content: '点击确定跳转到检查页面',
+      onOk() {
+        router.push(`/tasklist/check?id=${id}`);
+      },
+    });
 
   useEffect(() => {
     if (id) {
       APIGetRelationalSDK(id).then(res => {
-        setTaskinfo(res.data.data.taskInfo);
-        setMeta(res.data.data);
+        const { taskInfo } = res.data.data;
+        if (taskInfo.length > 0) {
+          setTaskinfo(res.data.data.taskInfo);
+          setMeta(res.data.data);
+        } else {
+          Jump();
+        }
       });
     }
-  }, []);
+  }, [id]);
 
   return (
     <MainLayout>
       {taskInfos[0] ? (
         <LabelBox
           taskinfo={taskInfos[0]}
-          onCommit={payload => console.log(payload)}
+          onCommit={payload =>
+            APICommit({
+              taskid: meta.taskID.toString(),
+              ...payload,
+            })
+              .then(() => {
+                message.success('标注成功');
+                if (taskInfos.length === 1) {
+                  Jump();
+                } else {
+                  setTaskinfo(e => [...e.slice(1, e.length)]);
+                }
+              })
+              .catch(err => message.error('网络错误'))
+          }
         />
       ) : null}
     </MainLayout>
