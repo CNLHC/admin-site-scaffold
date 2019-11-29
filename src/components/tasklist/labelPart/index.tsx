@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ImageRow, ImageCol, CheckAbleImage } from '../Common';
+import { ImageRow, ImageCol, CheckAbleImage, ImageWrapper } from '../Common';
 import styled from 'styled-components';
 import { StaticRoot } from '../../../libs/constant/conf';
 
@@ -17,13 +17,6 @@ const Base = styled.div`
   height: 10rem;
   display: flex;
   justify-content: space-around;
-`;
-const ImageWrapper = styled.div`
-  height: 100%;
-  img {
-    height: 100%;
-    width: auto;
-  }
 `;
 
 interface TLabel {

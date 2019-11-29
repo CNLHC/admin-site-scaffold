@@ -9,16 +9,37 @@ export interface Response {
   data: Data;
 }
 
-export interface Data {
+export type Data = normalData & CarData;
+
+interface normalData {
   id: number;
-  items: Item[];
+  items: NormalItem[];
   name: string;
   time: string;
 }
 
-export interface Item {
+interface CarData {
+  id: number;
+  items: CarItem[];
+  name: string;
+  nametype: '车牌';
+  time: string;
+}
+
+enum NameTypeEnum {
+  carID = '车牌',
+}
+export interface NormalItem {
   base: string;
   cap: string;
+  label: Label;
+  dup?: number;
+}
+
+export interface CarItem {
+  cap: string;
+  exif: string;
+  guess: string;
   label: Label;
   dup?: number;
 }

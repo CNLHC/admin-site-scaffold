@@ -16,67 +16,30 @@ import RadioGroup from 'antd/lib/radio/group';
 import { StaticRoot } from '../../../libs/constant/conf';
 import { APICommitRecog } from '../../../libs/API/commit_recog';
 import ImageDiff from '../../../components/tasklist/ImageDiff';
+import {
+  NormalRecogCard,
+  CarRecogCard,
+} from '../../../components/tasklist/recog/RecogBox';
 
 type data = Response['data']['items'];
-interface TImageBox {
-  data: data[0];
-  onLabel: (l: Label) => void;
-}
-const RecogBoxRoot = styled.div`
-  display: flex;
-  justify-content: space-around;
-  height: 8rem;
-  transition: 0.1s ease-in-out;
-  border-radius: 0.3rem;
-  &:hover {
-    img {
-      transform: scale(1.2);
-    }
-  }
-`;
-
-const RadioG = styled(RadioGroup)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-`;
-
-const RecogCard = ({ data, onLabel }: TImageBox) => {
-  return (
-    <RecogBoxRoot
-      style={{ background: data.dup && data.dup > 1 ? '#ffe7ba' : null }}
-    >
-      <ImageDiff
-        onClick={() =>
-          onLabel(data.label === 'wrong' ? Label.Right : Label.Wrong)
-        }
-        leftUrl={`${StaticRoot}${data.base}`}
-        rightUrl={`${StaticRoot}${data.cap}`}
-      />
-      <RadioG value={data.label} onChange={e => onLabel(e.target.value)}>
-        <Radio value={'right' as Label}>正确识别</Radio>
-        <Radio value={'wrong' as Label}>错误识别</Radio>
-      </RadioG>
-    </RecogBoxRoot>
-  );
-};
 
 export default function index() {
-  const [data, setData] = useState<{ [key: string]: data[0] }>();
+  const [data, setData] = useState<{ [key: string]: data[0] }>({});
+  const [meta, setMeta] = useState<Response | undefined>(undefined);
   const router = useRouter();
   const id = getId(router);
   useEffect(() => {
     if (id) {
       APIGetRecog(id)
-        .then(res =>
+        .then(res => {
           setData(
             res.data.data.items.reduce(
               (a, c) => ({ ...a, [c.base + c.cap]: c }),
               {}
             )
-          )
-        )
+          );
+          setMeta(res.data);
+        })
         .catch(() => message.error('网络错误'));
     }
   }, [id]);
@@ -84,6 +47,7 @@ export default function index() {
   const TotalCount = Entry.length;
   const RightCount = Entry.filter(([k, v]) => v.label === Label.Right).length;
   const DupCount = Entry.filter(([k, v]) => v.dup && v.dup > 1).length;
+  if (!meta) return <MainLayout>{null}</MainLayout>;
 
   return (
     <MainLayout>
@@ -92,21 +56,37 @@ export default function index() {
           {data
             ? _.chunk(Object.entries(data), 4).map((es, idx) => (
                 <ImageRow key={`row${idx}`}>
-                  {es.map(([k, v]) => (
-                    <RecogCard
-                      key={`${data[k].cap + data[k].base}`}
-                      data={data[k]}
-                      onLabel={label =>
-                        setData(e => ({
-                          ...e,
-                          [v.base + v.cap]: {
-                            ...data[k],
-                            label: label,
-                          },
-                        }))
-                      }
-                    />
-                  ))}
+                  {es.map(([k, v]) =>
+                    meta.data.nametype !== '车牌' ? (
+                      <NormalRecogCard
+                        key={`${data[k].cap + data[k].base}`}
+                        data={data[k]}
+                        onLabel={label =>
+                          setData(e => ({
+                            ...e,
+                            [v.base + v.cap]: {
+                              ...data[k],
+                              label: label,
+                            },
+                          }))
+                        }
+                      />
+                    ) : (
+                      <CarRecogCard
+                        key={`${data[k].cap + data[k].exif}`}
+                        data={data[k]}
+                        onLabel={label =>
+                          setData(e => ({
+                            ...e,
+                            [v.base + v.cap]: {
+                              ...data[k],
+                              label: label,
+                            },
+                          }))
+                        }
+                      />
+                    )
+                  )}
                 </ImageRow>
               ))
             : null}

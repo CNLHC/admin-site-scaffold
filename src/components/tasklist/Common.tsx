@@ -3,6 +3,14 @@ import { Button, Col, Row, Icon } from 'antd';
 import { ColProps } from 'antd/lib/col';
 import { StaticRoot } from '../../libs/constant/conf';
 
+export const ImageWrapper = styled.div`
+  height: 100%;
+  img {
+    height: 100%;
+    width: auto;
+  }
+`;
+
 export const getId = (router: any) => {
   const idstr: string | string[] | undefined = router.query.id;
   const id: number | undefined =
@@ -23,6 +31,7 @@ export const SubmitButton = styled(Button)`
 export const ImageArea = styled.div`
   width: 100%;
 `;
+
 
 export const ImageRow = styled(Row)`
   width: 100%;
