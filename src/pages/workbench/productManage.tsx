@@ -15,6 +15,9 @@ import getEditableTable, {
 import styled from 'styled-components';
 import { Button, Form, Input, Select, message, Popconfirm } from 'antd';
 import { withAuthCheck } from '../../libs/withCSRAuth';
+import ModalFormCreateProduct from '../../components/workbench/productManage/newForm';
+import { Request } from '../../libs/API/commit';
+import { APICreateProduct } from '../../libs/API/create_product';
 type Data = Response['data'][0];
 const Columns: EditableTableColumnProps<Data>[] = [
   {
@@ -66,6 +69,9 @@ const Columns: EditableTableColumnProps<Data>[] = [
     }),
   },
 ];
+const NewButton = styled(Button)`
+  margin-bottom: 1rem;
+`;
 const ButtonBox = styled.div`
   display: flex;
   justify-content: space-around;
@@ -154,8 +160,29 @@ function productManage() {
 
   useEffect(() => GetProductList(), []);
 
+  const [modal, setModal] = useState(false);
+
   return (
     <MainLayout>
+      <ModalFormCreateProduct
+        modal={{
+          title: '新建产品',
+          onCancel: () => setModal(false),
+          visible: modal,
+        }}
+        onSubmit={e =>
+          APICreateProduct(e)
+            .then(() => {
+              message.success('创建成功');
+              setModal(false);
+              GetProductList();
+            })
+            .catch(() => message.error('网络错误'))
+        }
+      />
+      <NewButton size={'large'} type={'primary'} onClick={() => setModal(true)}>
+        添加产品
+      </NewButton>
       <EditableFormTable data={prodData.data} />
     </MainLayout>
   );
