@@ -14,6 +14,12 @@ import { Button, Form, message, Popconfirm, Select } from 'antd';
 import { GetColumns } from '../../components/workbench/versionManage';
 import { APIListProduct } from '../../libs/API/productlist';
 import { withAuthCheck } from '../../libs/withCSRAuth';
+import { NewButton } from '../../components/Common/Button';
+import ModalFormCreateVersion from '../../components/workbench/productVersionManage';
+import { withRedux } from '../../libs/withRedux';
+import { Moment } from 'moment';
+import { APICreateVersions } from '../../libs/API/create_versions';
+import { UploadFile } from 'antd/lib/upload/interface';
 type Data = VersionResponse['data'][0];
 
 const ButtonBox = styled.div`
@@ -115,11 +121,40 @@ function versionManage() {
   useEffect(() => ListProd(), []);
   useEffect(() => GetVersionList(), []);
 
+  const [modal, setModal] = useState(false);
+
   return (
     <MainLayout>
+      <ModalFormCreateVersion
+        onSubmit={e => {
+          let fd = new FormData();
+          Object.entries(e).forEach(([k, v]) => {
+            if (k === 'releaseTime')
+              fd.append(k, (v as Moment).format('YYYY-MM-DD'));
+            else if (k === 'firmwarefile')
+              fd.append(k, (v[0] as UploadFile).originFileObj);
+            else fd.append(k, v);
+          });
+          APICreateVersions(fd)
+            .then(() => {
+              message.success('创建版本成功');
+              setModal(false);
+            })
+            .catch(() => message.error('网络错误'));
+        }}
+        modal={{
+          title: '发布版本',
+          visible: modal,
+          onCancel: () => setModal(false),
+        }}
+      />
+
+      <NewButton size={'large'} type={'primary'} onClick={() => setModal(true)}>
+        添加产品
+      </NewButton>
       <EditableFormTable data={versionData.data} />
     </MainLayout>
   );
 }
 
-export default withAuthCheck(versionManage);
+export default withAuthCheck(withRedux(versionManage));

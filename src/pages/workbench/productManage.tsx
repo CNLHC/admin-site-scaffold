@@ -18,6 +18,7 @@ import { withAuthCheck } from '../../libs/withCSRAuth';
 import ModalFormCreateProduct from '../../components/workbench/productManage/newForm';
 import { Request } from '../../libs/API/commit';
 import { APICreateProduct } from '../../libs/API/create_product';
+import { NewButton } from '../../components/Common/Button';
 type Data = Response['data'][0];
 const Columns: EditableTableColumnProps<Data>[] = [
   {
@@ -69,9 +70,6 @@ const Columns: EditableTableColumnProps<Data>[] = [
     }),
   },
 ];
-const NewButton = styled(Button)`
-  margin-bottom: 1rem;
-`;
 const ButtonBox = styled.div`
   display: flex;
   justify-content: space-around;

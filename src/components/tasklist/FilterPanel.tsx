@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 type model = Omit<listReq, 'count' | 'offset'>;
 type Props = {
-  products: prodRep;
+  products?: prodRep['data'];
   versions: versionResp;
   videos: videoResp;
   onFilterChange: (model: model) => void;
@@ -46,11 +46,12 @@ export default function FilterPanel(props: Props) {
             onChange={(e: string[]) => setModel(v => ({ ...v, product: e }))}
             style={{ width: '100%' }}
           >
-            {props.products.data.map(e => (
-              <Select.Option value={e} key={e}>
-                {e}
-              </Select.Option>
-            ))}
+            {props.products &&
+              props.products.map(e => (
+                <Select.Option value={e} key={e}>
+                  {e}
+                </Select.Option>
+              ))}
           </StyledSelect>
         </Form.Item>
         <Form.Item label={'测试版本'}>

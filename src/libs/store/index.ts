@@ -1,15 +1,18 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { BasicInfoReducer } from '../state/basic';
+import { ReducerState } from 'react';
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
 
-const initialState = {
-  lastUpdate: 0,
-  light: false,
-  count: 0,
-};
+const reducer = combineReducers({
+  BasicInfoReducer,
+});
 
-const reducer = (state = initialState, action) => state;
+export type RootState = ReducerState<typeof reducer>;
 
-export const initializeStore = (preloadedState = initialState) => {
+export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+export const initializeStore = preloadedState => {
   return createStore(
     reducer,
     preloadedState,

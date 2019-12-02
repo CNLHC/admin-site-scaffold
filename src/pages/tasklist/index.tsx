@@ -19,10 +19,18 @@ import {
 } from '../../libs/API/get_video';
 import { withAuthCheck } from '../../libs/withCSRAuth';
 import { Button } from 'antd';
+import { withRedux } from '../../libs/withRedux';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../libs/store';
+import { ACTGetProducts } from '../../libs/state/basic';
 
 const RootLayout = styled(MainLayout)``;
 
 function Page() {
+  const dispatch = useDispatch();
+  const products = useSelector<RootState, TProdRep['data']>(
+    e => e.BasicInfoReducer.products
+  );
   const [pagination, setPagination] = useState<{
     page: number;
     pageSize: number;
@@ -49,8 +57,6 @@ function Page() {
     data: [],
   });
 
-  const [products, setProducts] = useState<TProdRep['data']>([]);
-
   const [taskReq, setTaskReq] = useState<Request>({
     count: pagination.pageSize,
     offset: (pagination.page - 1) * pagination.pageSize,
@@ -71,7 +77,9 @@ function Page() {
   }, []);
 
   useEffect(() => {
-    Axios.get<TProdRep>(ProdAPI).then(res => setProdResp(res.data));
+    Axios.get<TProdRep>(ProdAPI).then(res =>
+      dispatch(ACTGetProducts(res.data.data))
+    );
   }, []);
 
   useEffect(() => {
@@ -83,11 +91,10 @@ function Page() {
   return (
     <RootLayout>
       <FilterPanel
-        products={prodResp}
+        products={products}
         videos={videoResp}
         versions={versionResp}
         onFilterChange={model => {
-          setProducts(model.product);
           setTaskReq(e => ({
             ...e,
             ...model,
@@ -113,4 +120,4 @@ function Page() {
   );
 }
 
-export default withAuthCheck(Page);
+export default withAuthCheck(withRedux(Page));
