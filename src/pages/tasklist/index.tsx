@@ -18,6 +18,7 @@ import {
   Route as VideoAPI,
 } from '../../libs/API/get_video';
 import { withAuthCheck } from '../../libs/withCSRAuth';
+import { Button } from 'antd';
 
 const RootLayout = styled(MainLayout)``;
 

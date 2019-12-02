@@ -53,5 +53,5 @@ export enum Product {
 export enum Tasktype {
   抓拍 = '抓拍',
   车牌抓拍 = '车牌抓拍',
+  FP = 'FP',
 }
-
