@@ -8,11 +8,34 @@ import {
 import TestVerisionFilterPanel, {
   GetColumns,
 } from '../../components/Report/capture';
-import { message, Table } from 'antd';
+import { message, Table, Button } from 'antd';
 import { withAuthCheck } from '../../libs/withCSRAuth';
 import { withRedux } from '../../libs/withRedux';
-type Data = BenchmarkResponse['data']['items'][0];
+import { CSVLink } from 'react-csv';
+import styled from 'styled-components';
 
+type Data = BenchmarkResponse['data']['items'][0];
+const Header = [
+  '测试创建时间',
+  '测试名字',
+  '产品',
+  '测试版本',
+  '测试视频',
+  '标注底库数',
+  '推图总数',
+  '有效face数',
+  '误拍数',
+  '漏拍数',
+  '重复数',
+  '抓拍率',
+  '误抓率',
+  '重复率',
+];
+
+const Hbox = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
 function capture() {
   const [benchmark, setBenchmark] = useState<Data[]>([]);
   const [count, setCounts] = useState<number>(0);
@@ -24,6 +47,7 @@ function capture() {
     version: [],
     video: [],
   });
+  const [selected, setSelected] = useState<Data[]>([]);
   const GetBenchmark = useCallback(
     (payload: BenchmarkRequest) =>
       APIGetBenchmark(
@@ -40,9 +64,18 @@ function capture() {
 
   return (
     <MainLayout>
-      <TestVerisionFilterPanel
-        onChange={v => setPayload(e => ({ ...e, ...v }))}
-      />
+      <Hbox>
+        <Button
+          type={'primary'}
+          disabled={selected.length === 0}
+          style={{ marginRight: '1em' }}
+        >
+          <CSVLink data={selected}>导出到CSV</CSVLink>
+        </Button>
+        <TestVerisionFilterPanel
+          onChange={v => setPayload(e => ({ ...e, ...v }))}
+        />
+      </Hbox>
       <Table
         columns={GetColumns()}
         dataSource={benchmark}
@@ -56,6 +89,12 @@ function capture() {
             })),
         }}
         rowKey={e => e.taskid.toString()}
+        rowSelection={{
+          onChange: (v, k) => {
+            console.log(k);
+            return setSelected(k);
+          },
+        }}
       />
     </MainLayout>
   );
