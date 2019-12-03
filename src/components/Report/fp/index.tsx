@@ -1,8 +1,6 @@
 import { Response } from '../../../libs/API/get_fp_benchmark';
-import Table, {
+import {
   ColumnProps,
-  PaginationConfig,
-  TableProps,
 } from 'antd/lib/table';
 
 type Data = Response['data']['items'][0];

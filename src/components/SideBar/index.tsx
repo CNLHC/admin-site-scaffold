@@ -2,8 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { TMenuItem } from '../../libs/types/menu';
 import MenuData from '../../libs/constant/menu';
-import Route, { withRouter, useRouter } from 'next/router';
-import { WithRouterProps } from 'next/dist/client/with-router';
+import Route, { useRouter } from 'next/router';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
