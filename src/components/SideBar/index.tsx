@@ -88,7 +88,6 @@ export default (function SideBar(props: TProps) {
       MenuData,
       openCumu
     );
-    console.log(1111, select);
     setSelected(select);
     setOpen(e => [...e, ...openCumu]);
   }, [router]);

@@ -74,7 +74,11 @@ export const Panel = ({ form }: TProps) => {
       {getFieldDecorator('product', { initialValue: [] })(
         <StyledSelect mode={'multiple'} placeholder={'选择产品型号'}>
           {products &&
-            products.map(e => <Select.Option value={e}>{e}</Select.Option>)}
+            products.map(e => (
+              <Select.Option value={e} key={e}>
+                {e}
+              </Select.Option>
+            ))}
         </StyledSelect>
       )}
     </Form.Item>
@@ -84,7 +88,12 @@ export const Panel = ({ form }: TProps) => {
     <Form.Item label="测试版本">
       {getFieldDecorator('version', { initialValue: [] })(
         <StyledSelect mode={'multiple'}>
-          {tv && tv.map(e => <Select.Option value={e}>{e}</Select.Option>)}
+          {tv &&
+            tv.map(e => (
+              <Select.Option value={e} key={e}>
+                {e}
+              </Select.Option>
+            ))}
         </StyledSelect>
       )}
     </Form.Item>
@@ -94,7 +103,11 @@ export const Panel = ({ form }: TProps) => {
       {getFieldDecorator('video', { initialValue: [] })(
         <StyledSelect mode={'multiple'}>
           {videos &&
-            videos.map(e => <Select.Option value={e}>{e}</Select.Option>)}
+            videos.map(e => (
+              <Select.Option value={e} key={e}>
+                {e}
+              </Select.Option>
+            ))}
         </StyledSelect>
       )}
     </Form.Item>

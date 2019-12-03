@@ -36,6 +36,7 @@ function capture() {
     <MainLayout>
       <Table
         columns={columns}
+        rowKey={e => e.taskid.toString()}
         dataSource={bench}
         pagination={{
           total: count,

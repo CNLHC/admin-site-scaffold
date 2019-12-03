@@ -81,7 +81,6 @@ export default function index() {
           type={'primary'}
           icon={'edit'}
           onClick={() => {
-            console.log(record);
             edit(record);
           }}
         >

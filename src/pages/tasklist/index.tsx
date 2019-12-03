@@ -83,9 +83,10 @@ function Page() {
   }, []);
 
   useEffect(() => {
-    Axios.post<TVersionResp>(VersionAPI, {
-      product: products,
-    }).then(res => setVersionResp(res.data));
+    if (products && products.length > 0)
+      Axios.post<TVersionResp>(VersionAPI, {
+        product: products,
+      }).then(res => setVersionResp(res.data));
   }, [products]);
 
   return (

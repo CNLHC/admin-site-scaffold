@@ -99,7 +99,6 @@ function capture() {
         rowKey={e => e.taskid.toString()}
         rowSelection={{
           onChange: (v, k) => {
-            console.log(k);
             return setSelected(k);
           },
         }}

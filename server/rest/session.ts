@@ -19,7 +19,6 @@ const foo: TPlugin<{}> = async (app, _opt) => {
         username: { $eq: payload.username },
         password: { $eq: payload.password },
       });
-      console.log(1111,userObj)
       if (userObj) {
         await Session.insertOne({ uid: userObj._id });
         return { token: app.jwt.sign({ uid: userObj._id }) };

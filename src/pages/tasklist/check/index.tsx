@@ -59,7 +59,6 @@ export default function index() {
         <PartLayout>
           <LabelPart
             onSelected={e => {
-              console.log(222, e);
               return setPartSelected(e);
             }}
             base={partLabel.labelimg}

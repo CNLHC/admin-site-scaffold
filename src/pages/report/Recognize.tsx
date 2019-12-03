@@ -37,6 +37,7 @@ function capture() {
     <MainLayout>
       <Table
         columns={columns}
+        rowKey={e => e.version + e.time + Math.random().toString(36)}
         dataSource={bench}
         pagination={{
           total: count,

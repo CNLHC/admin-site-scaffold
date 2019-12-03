@@ -11,7 +11,6 @@ export const withAuthCheck = PageComponent => {
     const authState = getState();
 
     const checkAuth = useCallback(jwt => {
-      console.log('check');
       Axios.post(
         '/api/check',
         {},

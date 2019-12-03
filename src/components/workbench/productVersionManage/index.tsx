@@ -50,7 +50,7 @@ function index({ onSubmit, modal, form }: TProps) {
       })(
         <Select>
           {products &&
-            products.map(e => <Select.Option value={e}>{e}</Select.Option>)}
+            products.map(e => <Select.Option value={e} key={e}>{e}</Select.Option>)}
         </Select>
       )}
     </Form.Item>

@@ -41,7 +41,6 @@ const Page = ({ form }: FormProps) => {
       if (err) return;
       Axios.post('/api/login', value)
         .then(res => {
-          console.log(`sttOken ${res.data.token}`);
           sessionStorage.setItem('jwt', res.data.token);
           Router.replace('/index');
         })

@@ -50,7 +50,11 @@ function index({ onSubmit, modal, form }: TProps) {
       })(
         <Select>
           {products &&
-            products.map(e => <Select.Option value={e}>{e}</Select.Option>)}
+            products.map(e => (
+              <Select.Option value={e} key={e}>
+                {e}
+              </Select.Option>
+            ))}
         </Select>
       )}
     </Form.Item>
@@ -64,13 +68,12 @@ function index({ onSubmit, modal, form }: TProps) {
   );
   const AlgorithmVersion = (
     <Form.Item label="算法">
-      {getFieldDecorator(
-        'algorithmVersionName',
-        {initialValue:" "}
-      )(
+      {getFieldDecorator('algorithmVersionName', { initialValue: ' ' })(
         <Select>
           {resource.algorithm.map(e => (
-            <Select.Option value={e}>{e}</Select.Option>
+            <Select.Option value={e} key={e}>
+              {e}
+            </Select.Option>
           ))}
         </Select>
       )}
@@ -78,13 +81,12 @@ function index({ onSubmit, modal, form }: TProps) {
   );
   const FirmwareVersion = (
     <Form.Item label="固件包">
-      {getFieldDecorator(
-        'firmwareVersionName',
-        {initialValue:" "}
-      )(
+      {getFieldDecorator('firmwareVersionName', { initialValue: ' ' })(
         <Select>
           {resource.firmware.map(e => (
-            <Select.Option value={e}>{e}</Select.Option>
+            <Select.Option value={e} key={e}>
+              {e}
+            </Select.Option>
           ))}
         </Select>
       )}
@@ -92,13 +94,12 @@ function index({ onSubmit, modal, form }: TProps) {
   );
   const FullpackVersion = (
     <Form.Item label="全量包">
-      {getFieldDecorator(
-        'fullPackVersionName',
-        {initialValue:" "}
-      )(
+      {getFieldDecorator('fullPackVersionName', { initialValue: ' ' })(
         <Select>
           {resource.fullpack.map(e => (
-            <Select.Option value={e}>{e}</Select.Option>
+            <Select.Option value={e} key={e}>
+              {e}
+            </Select.Option>
           ))}
         </Select>
       )}

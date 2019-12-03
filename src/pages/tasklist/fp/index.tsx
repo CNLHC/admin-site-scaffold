@@ -49,7 +49,6 @@ export default function index() {
       APIGetAllCapture(id).then(res => setData(res.data.data));
     }
   }, [router]);
-  console.log(checked);
   return (
     <MainLayout>
       <VBox>

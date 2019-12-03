@@ -99,7 +99,6 @@ function productManage() {
           type={'primary'}
           icon={'edit'}
           onClick={() => {
-            console.log(record);
             edit(record);
           }}
         >

@@ -86,7 +86,11 @@ function testVersion() {
         }}
       />
       <NewButton onClick={() => setModal(true)}>创建测试版本</NewButton>
-      <Table dataSource={versions.data} columns={columns} />
+      <Table
+        dataSource={versions.data}
+        columns={columns}
+        rowKey={e => e.testVersionID.toString()}
+      />
     </MainLayout>
   );
 }
