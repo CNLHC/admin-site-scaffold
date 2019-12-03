@@ -4,7 +4,8 @@ import { StaticRoot } from '../../../libs/constant/conf';
 import { ImageCol, ImageRow, CheckAbleImage, SubmitButton } from '../Common';
 import { TaskInfo } from '../../../libs/API/get_relationalsdk';
 import { Request } from '../../../libs/API/commit';
-import { message } from 'antd';
+import { message, Button } from 'antd';
+import _ from 'lodash';
 
 const Root = styled.div`
   display: flex;
@@ -24,31 +25,62 @@ const Candidate = styled.div`
 `;
 interface TLabelBox {
   taskinfo: TaskInfo;
+  AllCap: string[];
   onCommit: (payload: Omit<Request, 'taskid'>) => void;
 }
 
-export default function LabelBox({ taskinfo, onCommit }: TLabelBox) {
+export default function LabelBox({ taskinfo, onCommit, AllCap }: TLabelBox) {
   const [check, setCheck] = useState<string | undefined>(undefined);
+  const [more, setMore] = useState(false);
+  const AllRow = (
+    <>
+      {_.chunk(AllCap, 5).map(es => (
+        <ImageRow style={{ height: '10rem' }}>
+          {es.map(e => (
+            <CheckAbleImage
+              imageUrl={`${e}`}
+              checked={check === e}
+              onCheck={v => setCheck(e)}
+            />
+          ))}
+        </ImageRow>
+      ))}
+    </>
+  );
+  const AutoRow = (
+    <>
+      <ImageRow style={{ height: '10rem' }}>
+        {taskinfo.labelPic.map(e => (
+          <CheckAbleImage
+            imageUrl={`${e.capPic}`}
+            checked={check === e.capPic}
+            onCheck={v => setCheck(e.capPic)}
+            ColProps={{
+              span: 4,
+            }}
+          />
+        ))}
+      </ImageRow>
+      {more ? (
+        <>
+          {AllRow}
+          <Button onClick={() => setMore(false)}>less</Button>
+        </>
+      ) : (
+        <>
+          <Button onClick={() => setMore(true)}>more</Button>
+        </>
+      )}
+    </>
+  );
+
   return (
     <Root>
       <Gallery>
         <ImageCol>
           <img src={`${StaticRoot}${taskinfo.basePic}`} />
         </ImageCol>
-        <Candidate>
-          <ImageRow>
-            {taskinfo.labelPic.map(e => (
-              <CheckAbleImage
-                imageUrl={`${StaticRoot}${e.capPic}`}
-                checked={check === e.capPic}
-                onCheck={v => setCheck(e.capPic)}
-                ColProps={{
-                  span: 4,
-                }}
-              />
-            ))}
-          </ImageRow>
-        </Candidate>
+        <Candidate>{taskinfo.labelPic.length > 0 ? AutoRow : AllRow}</Candidate>
       </Gallery>
       <SubmitButton
         type={'primary'}

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-const DiffBox = styled.div`
+import { Col } from 'antd';
+const DiffCol = styled(Col)`
   padding: 0.5rem;
   display: flex;
   height: 100%;
@@ -25,13 +26,13 @@ interface TImageDiff {
 
 export default function ImageDiff({ onClick, leftUrl, rightUrl }: TImageDiff) {
   return (
-    <DiffBox onClick={onClick}>
+    <DiffCol onClick={onClick}>
       <DiffImgWrapper>
         <img src={leftUrl} />
       </DiffImgWrapper>
       <DiffImgWrapper>
         <img src={rightUrl} />
       </DiffImgWrapper>
-    </DiffBox>
+    </DiffCol>
   );
 }

@@ -11,7 +11,15 @@ import { Row, Col, Checkbox, Button, Icon, Modal, message } from 'antd';
 import styled from 'styled-components';
 import { APICommitFP } from '../../../libs/API/commit_fp';
 import { number } from 'prop-types';
-import { getId, ImageArea, VBox, SubmitButton, ImageCol, ImageRow } from '../../../components/tasklist/Common';
+import {
+  getId,
+  ImageArea,
+  VBox,
+  SubmitButton,
+  ImageCol,
+  ImageRow,
+  CheckAbleImage,
+} from '../../../components/tasklist/Common';
 import { ColProps } from 'antd/lib/col';
 
 type data = Response['data'];
@@ -24,20 +32,18 @@ interface TImage {
   data: data[0];
   checked: boolean;
   onCheck: (e: boolean) => void;
-  ColProps?:ColProps
-  
-
+  ColProps?: ColProps;
 }
 
-const Image = ({ data, checked, onCheck,ColProps}: TImage) => (
-  <ImageCol {...ColProps} onClick={() => onCheck(checked)}>
-    <img src={`${StaticRoot}${data.capimg}`} />
-    <BigIcon
-      type="check-circle"
-      style={{ color: checked ? '#73d13d' : '#e8e8e8' }}
-    />
-  </ImageCol>
-);
+// const Image = ({ data, checked, onCheck,ColProps}: TImage) => (
+//   <ImageCol {...ColProps} onClick={() => onCheck(checked)}>
+//     <img src={`${StaticRoot}${data.capimg}`} />
+//     <BigIcon
+//       type="check-circle"
+//       style={{ color: checked ? '#73d13d' : '#e8e8e8' }}
+//     />
+//   </ImageCol>
+// );
 
 export default function index() {
   const router = useRouter();
@@ -54,11 +60,11 @@ export default function index() {
       <VBox>
         <ImageArea>
           {_.chunk(data, 5).map(e => (
-            <ImageRow>
+            <ImageRow style={{ height: '12rem' }}>
               {e.map(v => (
-                <Image
+                <CheckAbleImage
                   key={v.capimg}
-                  data={v}
+                  imageUrl={v.capimg}
                   checked={checked[v.capimg] !== undefined}
                   onCheck={m => {
                     setSelected(d => ({

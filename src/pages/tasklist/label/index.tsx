@@ -18,11 +18,14 @@ import styled from 'styled-components';
 import LabelBox from '../../../components/tasklist/label/LabelBox';
 import { APICommit } from '../../../libs/API/commit';
 import { message, Modal } from 'antd';
+import { APIFilterCapture } from '../../../libs/API/filter_capture';
 
 type data = Response['data'];
 export default function index() {
   const [taskInfos, setTaskinfo] = useState<TaskInfo[]>([]);
   const [meta, setMeta] = useState<data | undefined>(undefined);
+  const [allCap, setAllCap] = useState<string[]>();
+
   const router = useRouter();
   const id = router.query.id ? (router.query.id as string) : undefined;
   const Jump = () =>
@@ -33,6 +36,12 @@ export default function index() {
         router.push(`/tasklist/check?id=${id}`);
       },
     });
+  useEffect(() => {
+    if (id)
+      APIFilterCapture(id)
+        .then(res => setAllCap(res.data.data.capture))
+        .catch(() => message.error('错误'));
+  }, [id]);
 
   useEffect(() => {
     if (id) {
@@ -53,6 +62,7 @@ export default function index() {
       {taskInfos[0] ? (
         <LabelBox
           taskinfo={taskInfos[0]}
+          AllCap={allCap}
           onCommit={payload =>
             APICommit({
               taskid: meta.taskID.toString(),

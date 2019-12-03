@@ -42,7 +42,6 @@ function capture() {
   const video = Array.from(new Set(bench.map(e => e.video)));
   const version = Array.from(new Set(bench.map(e => e.version)));
   useMemo(() => {
-    console.log(localFilter);
     setFilteredBench([
       ...bench
         .filter(

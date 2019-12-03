@@ -1,3 +1,5 @@
+import Axios from 'axios';
+
 const Route = (id: number | string) => `/api/filtercapture/${id}`;
 
 export interface Response {
@@ -8,3 +10,5 @@ export interface Response {
 export interface Data {
   capture: string[];
 }
+
+export const APIFilterCapture = id => Axios.get<Response>(Route(id));
