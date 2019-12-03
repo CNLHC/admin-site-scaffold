@@ -1,0 +1,111 @@
+import Table, { ColumnProps } from 'antd/lib/table';
+import React, { useState, useEffect, useMemo } from 'react';
+import {
+  Response,
+  Request,
+  APIListResources,
+} from '../../libs/API/list_resources';
+import { message, Form, Button, Popconfirm, Input } from 'antd';
+import MainLayout from '../../components/Layout';
+import getEditableTable, {
+  TActions,
+  EditableTableColumnProps,
+} from '../../components/Common/EdiableTable';
+import styled from 'styled-components';
+
+const ButtonBox = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+type Data = Response['data'];
+const Columns: EditableTableColumnProps<Data[0]>[] = [
+  {
+    dataIndex: 'name',
+    title: '资源名称',
+    key: 'name',
+    editable: true,
+    inputField: <Input />,
+  },
+  {
+    dataIndex: 'fullpath',
+    title: '文件名',
+    key: 'fullpath',
+    render: (text: string) => text.split('/').reverse()[0],
+  },
+  {
+    dataIndex: 'note',
+    title: '资源说明',
+    key: 'note',
+    editable: true,
+    inputField: <Input.TextArea />,
+  },
+  { dataIndex: 'type', title: '资源类型', key: 'type' },
+  { dataIndex: 'size', title: '资源大小', key: 'size' },
+];
+
+export default function index() {
+  const [data, setData] = useState<Data>([]);
+  const [payload, setPayload] = useState<Request>({
+    type: '',
+    name: '',
+  });
+  useEffect(() => {
+    APIListResources(payload)
+      .then(res => setData(res.data.data))
+      .catch(() => message.error('网络错误'));
+  }, [payload]);
+
+  const Actions: TActions<Data[0]> = ({ record, form, method }) => {
+    const { isEditing, edit, cancel } = method;
+    return !isEditing(record) ? (
+      <ButtonBox>
+        <Button
+          type={'primary'}
+          icon={'edit'}
+          onClick={() => {
+            console.log(record);
+            edit(record);
+          }}
+        >
+          编辑
+        </Button>
+        <Popconfirm
+          placement="topLeft"
+          title={'确认删除?'}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button type={'danger'} icon={'delete'}>
+            删除
+          </Button>
+        </Popconfirm>
+      </ButtonBox>
+    ) : (
+      <ButtonBox>
+        <Button type={'primary'} icon={'upload'} onClick={() => {}}>
+          提交
+        </Button>
+        <Button icon={'edit'} onClick={() => cancel()}>
+          取消
+        </Button>
+      </ButtonBox>
+    );
+  };
+
+  const EditableFormTable = useMemo(
+    () =>
+      Form.create<any>()(
+        getEditableTable(Actions, Columns, {
+          rowKey: e => e.id.toString(),
+          pagination: false,
+        })
+      ),
+    []
+  );
+  return (
+    <MainLayout>
+      {/* <Table columns={getColumns(Actions)} dataSource={data} /> */}
+      <EditableFormTable data={data} />
+    </MainLayout>
+  );
+}
