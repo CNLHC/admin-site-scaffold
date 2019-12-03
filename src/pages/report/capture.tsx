@@ -5,9 +5,12 @@ import {
   Request as BenchmarkRequest,
   APIGetBenchmark,
 } from '../../libs/API/get_benchmark';
-import CaptureTable from '../../components/Report/capture';
-import { message } from 'antd';
+import TestVerisionFilterPanel, {
+  GetColumns,
+} from '../../components/Report/capture';
+import { message, Table } from 'antd';
 import { withAuthCheck } from '../../libs/withCSRAuth';
+import { withRedux } from '../../libs/withRedux';
 type Data = BenchmarkResponse['data']['items'][0];
 
 function capture() {
@@ -33,13 +36,29 @@ function capture() {
       ),
     []
   );
-  useEffect(() => GetBenchmark(payload), []);
+  useEffect(() => GetBenchmark(payload), [payload]);
 
   return (
     <MainLayout>
-      <CaptureTable data={benchmark} />
+      <TestVerisionFilterPanel
+        onChange={v => setPayload(e => ({ ...e, ...v }))}
+      />
+      <Table
+        columns={GetColumns()}
+        dataSource={benchmark}
+        pagination={{
+          total: count,
+          onChange: (page, pageSize) =>
+            setPayload(e => ({
+              ...e,
+              count: pageSize,
+              offset: (page - 1) * pageSize,
+            })),
+        }}
+        rowKey={e => e.taskid.toString()}
+      />
     </MainLayout>
   );
 }
 
-export default withAuthCheck(capture);
+export default withAuthCheck(withRedux(capture));
