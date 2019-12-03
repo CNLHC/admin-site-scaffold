@@ -11,6 +11,9 @@ import {
 } from '../../libs/API/videolist';
 import styled from 'styled-components';
 import { withAuthCheck } from '../../libs/withCSRAuth';
+import { NewButton } from '../../components/Common/Button';
+import ModalFormCreateVideo from '../../components/workbench/videoManage';
+import { UploadFile } from 'antd/lib/upload/interface';
 type Data = VideoResponse['data'][0];
 
 const ButtonBox = styled.div`
@@ -65,8 +68,25 @@ function taskList() {
       ),
     [Columns]
   );
+  const [modal, setModal] = useState(false);
   return (
     <MainLayout>
+      <ModalFormCreateVideo
+        onSubmit={e => {
+          let fd = new FormData();
+          Object.entries(e).forEach(([k, v]) => {
+            if (k === 'file') fd.append(k, (v[0] as UploadFile).originFileObj);
+            else fd.append(k, v);
+          });
+          console.log(Array.from(fd.entries()));
+        }}
+        modal={{
+          title: '发布版本',
+          visible: modal,
+          onCancel: () => setModal(false),
+        }}
+      />
+      <NewButton onClick={() => setModal(true)}> 添加视频</NewButton>
       <EditableFormTable data={videos.data} />
     </MainLayout>
   );

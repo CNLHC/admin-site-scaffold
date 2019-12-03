@@ -29,8 +29,8 @@ const Menu: TMenuItem[] = [
       {
         title: '视频管理',
         childItem: [],
-        key: 'taskList',
-        route: 'taskList',
+        key: 'videoManage',
+        route: 'videoManage',
       },
       {
         title: '测试版本',
