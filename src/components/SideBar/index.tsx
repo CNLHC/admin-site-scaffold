@@ -22,7 +22,7 @@ const searchRouteItem = (
         return searchRouteItem(ingredients, Idx.childItem);
       } else return `${Idx.key}`;
     } else {
-      return `${Idx.key}`;
+      return ``;
     }
   } else return '';
 };
