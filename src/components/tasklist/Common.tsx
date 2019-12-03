@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button, Col, Row, Icon } from 'antd';
+import { Button, Col, Row, Icon, Popover } from 'antd';
 import { ColProps } from 'antd/lib/col';
 import { StaticRoot } from '../../libs/constant/conf';
 
@@ -31,7 +31,6 @@ export const SubmitButton = styled(Button)`
 export const ImageArea = styled.div`
   width: 100%;
 `;
-
 
 export const ImageRow = styled(Row)`
   width: 100%;
@@ -68,6 +67,11 @@ interface TImage {
   imageUrl: string;
   checked: boolean;
   onCheck: (e: boolean) => void;
+  extra?: {
+    title: string;
+    content: string;
+  };
+
   ColProps?: ColProps;
 }
 
@@ -76,9 +80,17 @@ export const CheckAbleImage = ({
   checked,
   onCheck,
   ColProps,
+  extra,
+  ...restProps
 }: TImage) => (
-  <ImageCol {...ColProps} onClick={() => onCheck(checked)}>
-    <img src={`${StaticRoot}${imageUrl}`} />
+  <ImageCol {...ColProps} onClick={() => onCheck(checked)} {...restProps}>
+    {extra ? (
+      <Popover title={extra.title} content={extra.content}>
+        <img src={`${StaticRoot}${imageUrl}`} />
+      </Popover>
+    ) : (
+      <img src={`${StaticRoot}${imageUrl}`} />
+    )}
     <BigIcon
       type="check-circle"
       style={{ color: checked ? '#73d13d' : '#e8e8e8' }}

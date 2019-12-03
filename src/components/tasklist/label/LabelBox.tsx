@@ -4,7 +4,7 @@ import { StaticRoot } from '../../../libs/constant/conf';
 import { ImageCol, ImageRow, CheckAbleImage, SubmitButton } from '../Common';
 import { TaskInfo } from '../../../libs/API/get_relationalsdk';
 import { Request } from '../../../libs/API/commit';
-import { message, Button } from 'antd';
+import { message, Button, Popover } from 'antd';
 import _ from 'lodash';
 
 const Root = styled.div`
@@ -28,6 +28,10 @@ interface TLabelBox {
   AllCap: string[];
   onCommit: (payload: Omit<Request, 'taskid'>) => void;
 }
+const HBox = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
 
 export default function LabelBox({ taskinfo, onCommit, AllCap }: TLabelBox) {
   const [check, setCheck] = useState<string | undefined>(undefined);
@@ -51,24 +55,38 @@ export default function LabelBox({ taskinfo, onCommit, AllCap }: TLabelBox) {
     <>
       <ImageRow style={{ height: '10rem' }}>
         {taskinfo.labelPic.map(e => (
-          <CheckAbleImage
-            imageUrl={`${e.capPic}`}
-            checked={check === e.capPic}
-            onCheck={v => setCheck(e.capPic)}
-            ColProps={{
-              span: 4,
-            }}
-          />
+          <>
+            <CheckAbleImage
+              imageUrl={`${e.capPic}`}
+              checked={check === e.capPic}
+              onCheck={v => setCheck(e.capPic)}
+              extra={{
+                title: '期望概率',
+                content: e.score.toString(),
+              }}
+              ColProps={{
+                span: 4,
+              }}
+            />
+          </>
         ))}
       </ImageRow>
       {more ? (
         <>
           {AllRow}
-          <Button onClick={() => setMore(false)}>less</Button>
+          <HBox>
+            <Button onClick={() => setMore(false)} type={'primary'}>
+              收起
+            </Button>
+          </HBox>
         </>
       ) : (
         <>
-          <Button onClick={() => setMore(true)}>more</Button>
+          <HBox>
+            <Button onClick={() => setMore(true)} type={'primary'}>
+              查看所有图片
+            </Button>
+          </HBox>
         </>
       )}
     </>
