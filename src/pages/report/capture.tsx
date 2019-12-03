@@ -81,6 +81,14 @@ function capture() {
         dataSource={benchmark}
         pagination={{
           total: count,
+          showSizeChanger: true,
+          defaultPageSize: 10,
+          onShowSizeChange: (_, size) =>
+            setPayload(e => ({
+              ...e,
+              count: size,
+              offset: 0,
+            })),
           onChange: (page, pageSize) =>
             setPayload(e => ({
               ...e,

@@ -2,22 +2,26 @@ import Axios from 'axios';
 
 export const Route = '/api/get_fp_benchmark';
 
-export const APIGetFPBenchmark = (payload, suc, fai) => {
-  Axios.post(Route, payload)
-    .then(suc)
-    .catch(fai);
-};
+export const APIGetFPBenchmark = (payload: Request) =>
+  Axios.post<Response>(Route, payload);
 
 export interface Request {
+  count: number;
+  offset: number;
   taskids: any[];
 }
 
 export interface Response {
   code: number;
-  data: Datum[];
+  data: Data;
 }
 
-export interface Datum {
+export interface Data {
+  items: Item[];
+  total: number;
+}
+
+export interface Item {
   basenum: Basenum;
   capturenum: number;
   dacelian: Basenum | number;
@@ -25,20 +29,30 @@ export interface Datum {
   dongwulian: Basenum | number;
   fpallnum: Basenum | number;
   hounaoshao: Basenum | number;
-  product: string;
+  product: Product;
   qita: Basenum | number;
   taskid: number;
   taskname: string;
   tasktime: string;
   tasktype: Tasktype;
   taskversion: string;
-  videoname: string;
+  videoname: Videoname;
 }
 
 export enum Basenum {
   NA = 'N/A',
 }
 
+export enum Product {
+  C3S = 'C3S',
+  Cp3 = 'CP3',
+  G3 = 'G3',
+}
+
 export enum Tasktype {
   FP = 'fp',
+}
+
+export enum Videoname {
+  TestFP = 'test_fp',
 }

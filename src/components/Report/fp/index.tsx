@@ -5,7 +5,7 @@ import Table, {
   TableProps,
 } from 'antd/lib/table';
 
-type Data = Response['data'][0];
+type Data = Response['data']['items'][0];
 
 export const GetColumns: () => ColumnProps<Data>[] = () => [
   { dataIndex: 'taskname', title: '任务名称', key: 'taskname' },
