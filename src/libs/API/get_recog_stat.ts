@@ -1,20 +1,26 @@
 import Axios from 'axios';
 const Route = '/api/get_recog_stat';
 
-export interface Response {
-  code: number;
-  data: Datum[];
+export interface Request {
+  count: number;
+  offset: number;
 }
 
-export const APIGetRecogStat = (suc, fai) => {
-  Axios.get(Route)
-    .then(suc)
-    .catch(fai);
-};
+export const APIGetRecogStat = (p: Request) => Axios.post<Response>(Route, p);
 
-export interface Datum {
+export interface Response {
+  code: number;
+  data: Data;
+}
+
+export interface Data {
+  items: Item[];
+  total: number;
+}
+
+export interface Item {
   base: string;
-  base_cnt: number | string;
+  base_cnt: number;
   name: string;
   product: string;
   stat: Stat;

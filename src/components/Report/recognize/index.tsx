@@ -1,5 +1,5 @@
 import { Response as FPStatResponse } from '../../../libs/API/get_recog_stat';
-type Data = FPStatResponse['data'][0];
+type Data = FPStatResponse['data']['items'][0];
 import { ColumnProps } from 'antd/lib/table';
 
 export const GetColumns: () => ColumnProps<Data>[] = () => [
