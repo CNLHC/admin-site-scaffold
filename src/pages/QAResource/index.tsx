@@ -14,10 +14,16 @@ import getEditableTable, {
 import styled from 'styled-components';
 import { debounce } from 'debounce';
 import QAResourceFilterPanel from '../../components/QAResource/panel';
+import ModalFormQAResource from '../../components/QAResource/modalform';
+import { NewButton } from '../../components/Common/Button';
 
 const ButtonBox = styled.div`
   display: flex;
   justify-content: space-around;
+`;
+const HBox = styled.div`
+  display: flex;
+  justify-content: flex-start;
 `;
 type Data = Response['data'];
 const Columns: EditableTableColumnProps<Data[0]>[] = [
@@ -114,11 +120,29 @@ export default function index() {
       ),
     []
   );
+  const [modal, setModal] = useState(false);
   return (
     <MainLayout>
-      <QAResourceFilterPanel
-        onChange={v => setPayload(e => ({ ...e, ...v }))}
+      <ModalFormQAResource
+        onSubmit={e => console.log(111, e)}
+        modal={{
+          title: '新建资源',
+          visible: modal,
+          onCancel: () => setModal(false),
+        }}
       />
+
+      <HBox>
+        <NewButton
+          onClick={() => setModal(true)}
+          style={{ marginRight: '1.5rem' }}
+        >
+          添加资源
+        </NewButton>
+        <QAResourceFilterPanel
+          onChange={v => setPayload(e => ({ ...e, ...v }))}
+        />
+      </HBox>
       <EditableFormTable data={data} />
     </MainLayout>
   );
