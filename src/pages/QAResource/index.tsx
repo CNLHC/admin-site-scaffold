@@ -1,5 +1,5 @@
 import Table, { ColumnProps } from 'antd/lib/table';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Response,
   Request,
@@ -12,6 +12,8 @@ import getEditableTable, {
   EditableTableColumnProps,
 } from '../../components/Common/EdiableTable';
 import styled from 'styled-components';
+import { debounce } from 'debounce';
+import QAResourceFilterPanel from '../../components/QAResource/panel';
 
 const ButtonBox = styled.div`
   display: flex;
@@ -49,10 +51,20 @@ export default function index() {
     type: '',
     name: '',
   });
+  const UpdateList = useCallback(
+    debounce<(payload: Request) => void>(
+      payload => {
+        APIListResources(payload)
+          .then(res => setData(res.data.data))
+          .catch(() => message.error('网络错误'));
+      },
+      50,
+      true
+    ),
+    []
+  );
   useEffect(() => {
-    APIListResources(payload)
-      .then(res => setData(res.data.data))
-      .catch(() => message.error('网络错误'));
+    UpdateList(payload);
   }, [payload]);
 
   const Actions: TActions<Data[0]> = ({ record, form, method }) => {
@@ -104,7 +116,9 @@ export default function index() {
   );
   return (
     <MainLayout>
-      {/* <Table columns={getColumns(Actions)} dataSource={data} /> */}
+      <QAResourceFilterPanel
+        onChange={v => setPayload(e => ({ ...e, ...v }))}
+      />
       <EditableFormTable data={data} />
     </MainLayout>
   );
