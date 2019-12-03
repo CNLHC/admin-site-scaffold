@@ -59,11 +59,4 @@ function MainLayout(props: {
   );
 }
 
-MainLayout.getInitialProps = async function() {
-  const res = await axios.post('/_auth/getToken', {
-    username: 'foo',
-    password: 'bar',
-  });
-};
-
 export default MainLayout;

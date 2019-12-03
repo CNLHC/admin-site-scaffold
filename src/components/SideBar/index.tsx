@@ -11,23 +11,20 @@ const { SubMenu } = Menu;
 const searchRouteItem = (
   ingredients: string[],
   menu: TMenuItem[],
-  cumulative = '/',
   openCumu: string[] = []
 ) => {
   const first = ingredients.shift();
   if (first) {
     const Idx = menu.find(e => e.route === first);
     if (Idx !== undefined) {
-      if (Idx.childItem.length > 0) openCumu.push(`${cumulative}${Idx.route}/`);
-      return searchRouteItem(
-        ingredients,
-        Idx.childItem,
-        (cumulative = `${cumulative}${Idx.route}/`)
-      );
+      if (Idx.childItem.length > 0) {
+        openCumu.push(`${Idx.key}`);
+        return searchRouteItem(ingredients, Idx.childItem);
+      } else return `${Idx.key}`;
     } else {
-      return `${cumulative}`;
+      return `${Idx.key}`;
     }
-  } else return cumulative;
+  } else return '';
 };
 
 const generateMenu = (
@@ -89,10 +86,9 @@ export default (function SideBar(props: TProps) {
     const select = searchRouteItem(
       router.pathname.split('/').filter(e => e.length > 0),
       MenuData,
-      '/',
       openCumu
     );
-
+    console.log(1111, select);
     setSelected(select);
     setOpen(e => [...e, ...openCumu]);
   }, [router]);
@@ -114,7 +110,9 @@ export default (function SideBar(props: TProps) {
           fontSize: '18pt',
         }}
       >
-        <div style={{ padding: '0.5em' }}>DEMO</div>
+        <div style={{ padding: '0.5em' }}>
+          {props.collapse ? 'FAST' : 'FASTEVAL'}
+        </div>
       </div>
 
       <Menu

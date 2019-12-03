@@ -96,13 +96,6 @@ const Menu: TMenuItem[] = [
     icon: 'file-image',
     route: 'QAResource',
   },
-  {
-    title: 'Proto解析',
-    childItem: [],
-    key: 'protoParse',
-    icon: 'block',
-    route: 'protoParse',
-  },
 ];
 
 export default Menu;
