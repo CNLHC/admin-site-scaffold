@@ -2,7 +2,7 @@ import { produce } from 'immer';
 import { Reducer } from 'redux';
 
 export type TState = {
-  products?: string[];
+  products: string[] | undefined;
 };
 
 const initState: TState = {

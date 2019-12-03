@@ -6,6 +6,11 @@ import GetColumns from '../../components/workbench/testversion';
 import MainLayout from '../../components/Layout';
 import styled from 'styled-components';
 import { withAuthCheck } from '../../libs/withCSRAuth';
+import { withRedux } from '../../libs/withRedux';
+import ModalFormCreateTestVersion from '../../components/workbench/testversion/form';
+import { NewButton } from '../../components/Common/Button';
+import { Moment } from 'moment';
+import { APICreateTestVersions } from '../../libs/API/create_testversion';
 type data = TestVersionResponse['data'][0];
 const VertBox = styled.div`
   display: flex;
@@ -55,13 +60,35 @@ function testVersion() {
     );
   };
   const columns = useMemo(() => GetColumns(Actions), [Actions]);
+  const [modal, setModal] = useState(false);
   useEffect(() => GetTestVersionList(), []);
 
   return (
     <MainLayout>
+      <ModalFormCreateTestVersion
+        onSubmit={e => {
+          const payload = {
+            ...e,
+            createTime: (e.createTime as Moment).format('YYYY-MM-DD'),
+          };
+          APICreateTestVersions(payload)
+            .then(res => {
+              message.success('创建成功');
+              GetTestVersionList();
+              setModal(false);
+            })
+            .catch(() => message.error('网络错误'));
+        }}
+        modal={{
+          title: '发布版本',
+          visible: modal,
+          onCancel: () => setModal(false),
+        }}
+      />
+      <NewButton onClick={() => setModal(true)}>创建测试版本</NewButton>
       <Table dataSource={versions.data} columns={columns} />
     </MainLayout>
   );
 }
 
-export default withAuthCheck(testVersion);
+export default withAuthCheck(withRedux(testVersion));
