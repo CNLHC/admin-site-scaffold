@@ -76,27 +76,35 @@ interface TProps {
   overrideOnClick?: { [key: string]: () => void };
 }
 
-export default (function SideBar(props: TProps) {
+export default (function SideBar({
+  collapse,
+  overrideOnClick,
+  onCollapse,
+}: TProps) {
   const [open, setOpen] = useState<string[]>([]);
   const [selected, setSelected] = useState('');
   const router = useRouter();
   useMemo(() => {
-    const openCumu: string[] = [];
-    const select = searchRouteItem(
-      router.pathname.split('/').filter(e => e.length > 0),
-      MenuData,
-      openCumu
-    );
-    setSelected(select);
-    setOpen(e => [...e, ...openCumu]);
-  }, [router]);
+    if (!collapse) {
+      const openCumu: string[] = [];
+      const select = searchRouteItem(
+        router.pathname.split('/').filter(e => e.length > 0),
+        MenuData,
+        openCumu
+      );
+      setSelected(select);
+      setOpen(e => [...e, ...openCumu]);
+    } else {
+      setOpen(e => []);
+    }
+  }, [router, collapse]);
   const MenuChild = useMemo(
-    () => generateMenu(MenuData, '/', props.overrideOnClick),
+    () => generateMenu(MenuData, '/', overrideOnClick),
     []
   );
 
   return (
-    <Sider collapsible collapsed={props.collapse} onCollapse={props.onCollapse}>
+    <Sider collapsible collapsed={collapse} onCollapse={onCollapse}>
       <div
         className="LogoArea"
         style={{
@@ -108,9 +116,7 @@ export default (function SideBar(props: TProps) {
           fontSize: '18pt',
         }}
       >
-        <div style={{ padding: '0.5em' }}>
-          {props.collapse ? 'FAST' : 'FASTEVAL'}
-        </div>
+        <div style={{ padding: '0.5em' }}>{collapse ? 'FAST' : 'FASTEVAL'}</div>
       </div>
 
       <Menu
