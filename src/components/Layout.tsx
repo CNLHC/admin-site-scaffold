@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Layout } from 'antd';
+import { Layout, message } from 'antd';
 import axios from 'axios';
 import SideBar from './SideBar';
 import TopBar from './TopBar';
 import ModalFormFPCAP from './create/fpcap';
+import { APICreateTask } from '../libs/API/create_task';
+import ModalFormRecog from './create/recog';
+import { APICreateRecogTask } from '../libs/API/create_recog_task';
 const { Content } = Layout;
 
 function MainLayout(props: {
@@ -16,7 +19,14 @@ function MainLayout(props: {
     <Layout style={{ minHeight: '100vh' }} hasSider>
       <ModalFormFPCAP
         tasktype={['抓拍', 'FP']}
-        onSubmit={e => console.log(Array.from(e.entries()))}
+        onSubmit={e => {
+          APICreateTask(e)
+            .then(() => {
+              message.success('创建成功');
+              setFpcap(false);
+            })
+            .catch(() => message.error('创建失败'));
+        }}
         modal={{
           title: '创建FP/抓拍任务',
           visible: fpcap,
@@ -24,9 +34,16 @@ function MainLayout(props: {
           onCancel: () => setFpcap(false),
         }}
       />
-      <ModalFormFPCAP
+      <ModalFormRecog
         tasktype={['G3', 'B2R', 'DEV', 'NVR', 'Pandaeye', '车牌']}
-        onSubmit={e => console.log(Array.from(e.entries()))}
+        onSubmit={e => {
+          APICreateRecogTask(e)
+            .then(() => {
+              message.success('创建成功');
+              setRecog(false);
+            })
+            .catch(() => message.error('创建失败'));
+        }}
         modal={{
           title: '创建识别任务',
           visible: recog,

@@ -16,6 +16,7 @@ import { debounce } from 'debounce';
 import QAResourceFilterPanel from '../../components/QAResource/panel';
 import ModalFormQAResource from '../../components/QAResource/modalform';
 import { NewButton } from '../../components/Common/Button';
+import { APIUploadResource } from '../../libs/API/upload_resources';
 
 const ButtonBox = styled.div`
   display: flex;
@@ -123,7 +124,15 @@ export default function index() {
   return (
     <MainLayout>
       <ModalFormQAResource
-        onSubmit={e => console.log(111, e)}
+        onSubmit={e => {
+          APIUploadResource(e)
+            .then(() => {
+              message.success('上传成功');
+              setModal(false);
+              UpdateList(payload);
+            })
+            .catch(() => message.error('网络错误'));
+        }}
         modal={{
           title: '新建资源',
           visible: modal,

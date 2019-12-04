@@ -22,17 +22,6 @@ import {
 import { Response as BaseResp, APIBaseList } from '../../../libs/API/baselist';
 import { UploadFile } from 'antd/lib/upload/interface';
 
-//
-//taskname: 12
-//tasktype: FP
-//videoname: test_fp
-//basename: test_fp
-//taskversion: old_c3s_7030_CNN190220
-//product: C3S
-//uploadmethod: file
-//ftpserver: tw
-//ftppath:
-//capfiles: (binary)
 interface TOwnProps {
   modal: ModalProps;
 }
@@ -43,12 +32,7 @@ interface TProps extends FormComponentProps {
   onSubmit: (e: FormData) => void;
 }
 
-function index({
-  onSubmit,
-  modal,
-  form,
-  tasktype,
-}: TOwnProps & TProps) {
+function index({ onSubmit, modal, form, tasktype }: TOwnProps & TProps) {
   const { getFieldDecorator, getFieldValue, resetFields } = form;
   const [videos, setVideos] = useState<VideoResp['data']>([]);
   const [products, setProd] = useState<ProdResp['data']>([]);
@@ -80,14 +64,6 @@ function index({
       .then(res => setVersions(res.data.data))
       .catch(() => message.error('网络错误'));
   }, [selectedProd]);
-  useEffect(() => {
-    resetFields(['videoname']);
-    if (selectedType ) {
-      APITaskType({ task_type: selectedType })
-        .then(res => setVideos(res.data.data ? res.data.data : []))
-        .catch(() => message.error('网络错误'));
-    }
-  }, [selectedType]);
   const normFile = e => {
     return [e.file];
   };
@@ -99,8 +75,8 @@ function index({
     </Form.Item>
   );
   const TestMethod = (
-    <Form.Item label="测试方式">
-      {getFieldDecorator('tasktype', {
+    <Form.Item label="测试类别">
+      {getFieldDecorator('nametype', {
         rules: [{ required: true, message: '请选择测试方式' }],
       })(
         <Select>
@@ -191,7 +167,7 @@ function index({
   const DataSource =
     getFieldValue('uploadmethod') === 'ftp' ? (
       <>
-        <Form.Item label={'路径'}>
+        <Form.Item label={'服务器'}>
           {getFieldDecorator('ftpserver', {
             rules: [{ required: true }],
             initialValue: 'hk',
@@ -210,7 +186,7 @@ function index({
       </>
     ) : (
       <Form.Item label={'文件上传'}>
-        {getFieldDecorator('capfiles', {
+        {getFieldDecorator('archive', {
           valuePropName: 'fileList',
           getValueFromEvent: normFile,
           rules: [{ required: true }],
@@ -236,7 +212,7 @@ function index({
       Object.entries(value).forEach(([k, v]) =>
         fd.append(
           k,
-          k === 'capfiles' ? (v[0] as UploadFile).originFileObj : (v as string)
+          k === 'archive' ? (v[0] as UploadFile).originFileObj : (v as string)
         )
       );
 
@@ -260,5 +236,5 @@ function index({
   );
 }
 
-const ModalFormFPCAP = Form.create<TProps>({})(index);
-export default ModalFormFPCAP;
+const ModalFormRecog = Form.create<TProps>({})(index);
+export default ModalFormRecog;

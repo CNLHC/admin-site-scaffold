@@ -3,6 +3,7 @@ import { Modal, Input, Select, Radio, Upload, Icon } from 'antd';
 import Form, { FormComponentProps } from 'antd/lib/form';
 import { ModalProps } from 'antd/lib/modal';
 import RadioGroup from 'antd/lib/radio/group';
+import { UploadFile } from 'antd/lib/upload/interface';
 
 interface TOwnProps {
   modal: ModalProps;
@@ -26,7 +27,7 @@ function index({ onSubmit, modal, form }: TOwnProps & TProps) {
   );
   const Note = (
     <Form.Item label="资源说明">
-      {getFieldDecorator('Note', {
+      {getFieldDecorator('note', {
         rules: [{ required: true, message: '请填写资源说明' }],
       })(<Input.TextArea rows={4} />)}
     </Form.Item>
@@ -104,7 +105,10 @@ function index({ onSubmit, modal, form }: TOwnProps & TProps) {
       if (err) console.log(err);
       let fd = new FormData();
       Object.entries(value).forEach(([k, v]) =>
-        fd.append(k, k === 'file' ? v[0] : v)
+        fd.append(
+          k,
+          k === 'file' ? (v[0] as UploadFile).originFileObj : (v as string)
+        )
       );
 
       onSubmit(fd);
