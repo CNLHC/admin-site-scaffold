@@ -1,4 +1,5 @@
-export const Route = '/api/tasklist'
+export const Route = `${APIBase}/api/tasklist`
+import {APIBase} from "../constant/conf"
 
 export interface Request {
   count: number;

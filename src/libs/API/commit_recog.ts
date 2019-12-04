@@ -1,7 +1,8 @@
 import Axios from 'axios';
+import {APIBase} from "../constant/conf"
 import { Label } from './get_recog';
 
-const Route = `/api/commit_recog`;
+const Route = `${APIBase}/api/commit_recog`;
 export const APICommitRecog = (payload: Request) => Axios.post(Route, payload);
 
 export interface Request {

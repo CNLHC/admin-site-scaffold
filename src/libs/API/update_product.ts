@@ -1,4 +1,6 @@
-export const Route = '/api/update_product';
+
+import {APIBase} from "../constant/conf"
+export const Route = `${APIBase}/api/update_product`;
 
 export interface Request {
   productID: number;

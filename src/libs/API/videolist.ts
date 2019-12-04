@@ -1,6 +1,7 @@
 import Axios from 'axios';
+import {APIBase} from "../constant/conf"
 
-export const Route = '/api/videolist';
+export const Route = `${APIBase}/api/videolist`;
 
 export const APIListVideo = (suc, fai) => {
   Axios.get(Route)

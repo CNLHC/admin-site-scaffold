@@ -1,4 +1,6 @@
-export const Route = '/api/versionlist';
+
+import {APIBase} from "../constant/conf"
+export const Route = `${APIBase}/api/versionlist`;
 
 export interface Response {
   code: number;

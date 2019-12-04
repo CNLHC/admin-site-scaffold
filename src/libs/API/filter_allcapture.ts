@@ -1,6 +1,7 @@
 import Axios from 'axios';
+import {APIBase} from "../constant/conf"
 
-export const Route = (id: number|string) => `/api/filter_allcapture/${id}`;
+export const Route = (id: number|string) => `${APIBase}/api/filter_allcapture/${id}`;
 export const APIGetAllCapture = (id: number|string) => {
   return Axios.get(Route(id));
 };

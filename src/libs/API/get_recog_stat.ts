@@ -1,5 +1,6 @@
 import Axios from 'axios';
-const Route = '/api/get_recog_stat';
+import {APIBase} from "../constant/conf"
+const Route = `${APIBase}/api/get_recog_stat`;
 
 export interface Request {
   count: number;

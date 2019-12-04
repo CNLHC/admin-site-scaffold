@@ -1,6 +1,7 @@
 import Axios from 'axios';
+import {APIBase} from "../constant/conf"
 
-export const Route = '/api/productlist';
+export const Route = `${APIBase}/api/productlist`;
 
 export const APIListProduct = (scb, ecb) => {
   Axios.get(Route)

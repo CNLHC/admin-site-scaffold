@@ -140,7 +140,9 @@ function versionManage() {
               message.success('创建版本成功');
               setModal(false);
             })
-            .catch(() => message.error('网络错误'));
+            .catch(err => {
+              return message.error('网络错误');
+            });
         }}
         modal={{
           title: '发布版本',

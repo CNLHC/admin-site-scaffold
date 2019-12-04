@@ -1,6 +1,7 @@
 import Axios from 'axios';
+import {APIBase} from "../constant/conf"
 
-const Route = '/api/filter_version_as_part';
+const Route = `${APIBase}/api/filter_version_as_part`;
 export const  APIFilterVersionPart= (p: Request) => Axios.post<Response>(Route, p);
 
 export interface Request {

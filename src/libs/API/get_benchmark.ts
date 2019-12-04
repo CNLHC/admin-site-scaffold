@@ -1,6 +1,7 @@
 import Axios from 'axios';
+import {APIBase} from "../constant/conf"
 
-export const Route = '/api/get_benchmark';
+export const Route = `${APIBase}/api/get_benchmark`;
 
 export const APIGetBenchmark = (payload: Request, suc, fai) => {
   Axios.post(Route, payload)

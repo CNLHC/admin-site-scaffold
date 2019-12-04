@@ -45,20 +45,12 @@ const foo: TPlugin<{}> = async (app, _opt) => {
   app.post(
     '/check',
     {
-      preHandler:  [app.authBy([app.authByJWT])],
+      preHandler: [app.authBy([app.authByJWT])],
     },
     async (req, _p) => ({ login: true })
   );
 
-  app.post('/*', async (req, _p) => {
-    const res = await axios.post(`http://10.199.0.191${req.raw.url}`, req.body);
-    return res.data;
-  });
 
-  app.get('/*', async (req, _p) => {
-    const res = await axios.get(`http://10.199.0.191${req.raw.url}`, req.body);
-    return res.data;
-  });
 };
 
 export default foo;

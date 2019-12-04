@@ -1,6 +1,7 @@
 import Axios from 'axios';
+import {APIBase} from "../constant/conf"
 
-export const Route = '/api/testversion_list';
+export const Route = `${APIBase}/api/testversion_list`;
 
 export const APIListTestVersion = (suc, fai) => {
   Axios.get(Route)

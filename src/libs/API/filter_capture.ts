@@ -1,6 +1,7 @@
 import Axios from 'axios';
+import {APIBase} from "../constant/conf"
 
-const Route = (id: number | string) => `/api/filtercapture/${id}`;
+const Route = (id: number | string) => `${APIBase}/api/filtercapture/${id}`;
 
 export interface Response {
   code: number;

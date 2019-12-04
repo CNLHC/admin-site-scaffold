@@ -1,6 +1,7 @@
 import Axios from 'axios';
+import {APIBase} from "../constant/conf"
 
-const Route = '/api/list_resource';
+const Route = `${APIBase}/api/list_resource`;
 
 export const APIListResources = (p: Request) => Axios.post(Route, p);
 

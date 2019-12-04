@@ -1,4 +1,5 @@
 import Axios from "axios";
+import {APIBase} from "../constant/conf"
 
 export interface Request {
   testVersionName: string;
@@ -9,6 +10,6 @@ export interface Request {
   fullPackVersionName: string;
 }
 
-const Route = '/api/create_test_version';
+const Route = `${APIBase}/api/create_test_version`;
 
 export const APICreateTestVersions = (p: Request) => Axios.post(Route, p);

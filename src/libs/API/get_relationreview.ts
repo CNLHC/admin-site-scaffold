@@ -1,6 +1,7 @@
 import Axios from 'axios';
+import {APIBase} from "../constant/conf"
 
-const Route = (id: string | number) => `/api/get_relationreview/${id}`;
+const Route = (id: string | number) => `${APIBase}/api/get_relationreview/${id}`;
 
 export const APIGetRelationReview = (id: string | number) =>
   Axios.get<Response>(Route(id));

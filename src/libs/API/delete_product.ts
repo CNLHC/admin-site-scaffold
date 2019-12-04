@@ -1,1 +1,2 @@
-export const Route = (id: number) => `/api/delete_product/${id}`;
+export const Route = (id: number) => `${APIBase}/api/delete_product/${id}`;
+import {APIBase} from "../constant/conf"

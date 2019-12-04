@@ -1,12 +1,7 @@
 import Axios from 'axios';
+import { APIBase } from '../constant/conf';
 
-const Route = '/api/create_version';
+const Route = `${APIBase}/api/create_version`;
 
 export const APICreateVersions = (p: FormData) =>
-  Axios({
-    method: 'post',
-    url: Route,
-    data: p,
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
-
+  Axios.post(Route, p, { headers: { 'Content-Type': 'multipart/form-data' } });

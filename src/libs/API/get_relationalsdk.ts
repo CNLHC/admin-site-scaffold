@@ -1,6 +1,6 @@
 import Axios from 'axios';
-
-const Route = (id: string | number) => `/api/get_relationsdk/${id}`;
+import {APIBase} from "../constant/conf"
+const Route = (id: string | number) => `${APIBase}/api/get_relationsdk/${id}`; 
 
 export const APIGetRelationalSDK = (id: string | number) =>
   Axios.get<Response>(Route(id));
