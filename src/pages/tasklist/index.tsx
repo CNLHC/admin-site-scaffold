@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import MainLayout from '../../components/Layout';
-import TaskTable from '../../components/tasklist/TaskTable';
+import { getColumns } from '../../components/tasklist/TaskTable';
 import { Response, Request, Route as TaskAPI } from '../../libs/API/tasklist';
 import Axios from 'axios';
 import FilterPanel from '../../components/tasklist/FilterPanel';
@@ -18,105 +18,231 @@ import {
   Route as VideoAPI,
 } from '../../libs/API/get_video';
 import { withAuthCheck } from '../../libs/withCSRAuth';
-import { Button } from 'antd';
+import { Button, Table, Form, Modal, Input, message } from 'antd';
 import { withRedux } from '../../libs/withRedux';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../libs/store';
+import { useDispatch } from 'react-redux';
+import { useTypedSelector } from '../../libs/store';
 import { ACTGetProducts } from '../../libs/state/basic';
+import { useRouter } from 'next/router';
+import { APIDeleteTasks } from '../../libs/API/delete_task';
+
+type TData = Response['data']['items'][0];
 
 const RootLayout = styled(MainLayout)``;
+type TActions = (props: { data: TData }) => JSX.Element;
+const ButtonBox = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+const HBox = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+`;
 
 function Page() {
   const dispatch = useDispatch();
-  const products = useSelector<RootState, TProdRep['data']>(
-    e => e.BasicInfoReducer.products
-  );
-  const [pagination, setPagination] = useState<{
-    page: number;
-    pageSize: number;
-  }>({
-    page: 1,
-    pageSize: 10,
-  });
-
+  const products = useTypedSelector(e => e.BasicInfoReducer.products);
   const [taskResp, setTaskResp] = useState<Response['data']>({
     items: [],
     total: 0,
   });
-
-  const [prodResp, setProdResp] = useState<TProdRep>({
-    code: 0,
-    data: [],
-  });
-  const [versionResp, setVersionResp] = useState<TVersionResp>({
-    code: 0,
-    data: [],
-  });
-  const [videoResp, setVideoResp] = useState<TVideoResp>({
-    code: 0,
-    data: [],
-  });
-
+  const [selected, setSelected] = useState<Response['data']['items']>([]);
+  const [versionResp, setVersionResp] = useState<TVersionResp['data']>([]);
+  const [videoResp, setVideoResp] = useState<TVideoResp['data']>([]);
   const [taskReq, setTaskReq] = useState<Request>({
-    count: pagination.pageSize,
-    offset: (pagination.page - 1) * pagination.pageSize,
+    count: 10,
+    offset: 0,
     product: [],
-    taskname: ' ',
+    taskname: '',
     version: [],
     video: [],
   });
-
-  useEffect(() => {
+  const UpdateTaskList = () =>
     Axios.post<Response>(TaskAPI, taskReq).then(res =>
       setTaskResp(res.data.data)
     );
-  }, [taskReq]);
 
   useEffect(() => {
-    Axios.get<TVideoResp>(VideoAPI).then(res => setVideoResp(res.data));
-  }, []);
+    UpdateTaskList();
+  }, [taskReq]);
 
   useEffect(() => {
     Axios.get<TProdRep>(ProdAPI).then(res =>
       dispatch(ACTGetProducts(res.data.data))
     );
+    Axios.get<TVideoResp>(VideoAPI).then(res => setVideoResp(res.data.data));
   }, []);
 
   useEffect(() => {
     if (products && products.length > 0)
       Axios.post<TVersionResp>(VersionAPI, {
         product: products,
-      }).then(res => setVersionResp(res.data));
+      }).then(res => setVersionResp(res.data.data));
   }, [products]);
+
+  const router = useRouter();
+
+  const Actions: TActions = props => {
+    switch (props.data.tasktype) {
+      case '识别':
+        return (
+          <ButtonBox>
+            <Button
+              type={'primary'}
+              onClick={() =>
+                router.push(`/tasklist/RecogLabel?id=${props.data.taskid}`)
+              }
+            >
+              识别标注
+            </Button>
+          </ButtonBox>
+        );
+      case 'fp':
+        return (
+          <ButtonBox>
+            <Button
+              type={'primary'}
+              onClick={() =>
+                router.push(`/tasklist/fp?id=${props.data.taskid}`)
+              }
+            >
+              FP标注
+            </Button>
+            <Button
+              onClick={() =>
+                router.push(`/tasklist/check?id=${props.data.taskid}`)
+              }
+            >
+              检查
+            </Button>
+          </ButtonBox>
+        );
+      default:
+        return (
+          <ButtonBox>
+            <Button
+              type={'primary'}
+              onClick={() =>
+                router.push(`/tasklist/fp?id=${props.data.taskid}`)
+              }
+            >
+              FP标注
+            </Button>
+            <Button
+              onClick={() =>
+                router.push(`/tasklist/label?id=${props.data.taskid}`)
+              }
+            >
+              标注
+            </Button>
+            <Button
+              style={{ background: '#389e0d', color: '#fff' }}
+              onClick={() =>
+                router.push(`/tasklist/check?id=${props.data.taskid}`)
+              }
+            >
+              检查
+            </Button>
+          </ButtonBox>
+        );
+    }
+  };
+
+  const columns = getColumns(Actions);
+  const [deleteModal, setDeleteModal] = useState(false);
+
+  const [fakepass, setFakePass] = useState('');
 
   return (
     <RootLayout>
-      <FilterPanel
-        products={products}
-        videos={videoResp}
-        versions={versionResp}
-        onFilterChange={model => {
-          setTaskReq(e => ({
-            ...e,
-            ...model,
-          }));
+      <Modal
+        title="输入密码确认删除"
+        visible={deleteModal}
+        onOk={() => {
+          APIDeleteTasks({
+            tasks: selected.map(e => e.taskid),
+            token: fakepass,
+          })
+            .then(res => {
+              if (res.data.code < 300) {
+                UpdateTaskList();
+                setDeleteModal(false);
+                setFakePass('');
+              } else {
+                message.error('删除失败');
+                setDeleteModal(false);
+                setFakePass('');
+              }
+            })
+            .catch(() => {
+              message.error('网络错误');
+              setDeleteModal(false);
+              setFakePass('');
+            });
         }}
-      />
-      <div>
-        <TaskTable
-          data={taskResp}
-          delete={payload => console.log(payload)}
-          onPageChange={(page, pageSize) => {
+        onCancel={() => setDeleteModal(false)}
+        okText="确认"
+        cancelText="取消"
+      >
+        <Input
+          value={fakepass}
+          onChange={e => setFakePass(e.target.value)}
+        ></Input>
+      </Modal>
+      <HBox>
+        <Form.Item>
+          <Button
+            onClick={() => setDeleteModal(true)}
+            type="danger"
+            style={{ marginRight: '1.5rem' }}
+            disabled={selected.length === 0}
+          >
+            删除
+          </Button>
+        </Form.Item>
+
+        <FilterPanel
+          products={products}
+          videos={videoResp}
+          versions={versionResp}
+          onFilterChange={model => {
+            setTaskReq(e => ({
+              ...e,
+              ...model,
+            }));
+          }}
+        />
+      </HBox>
+      <Table
+        rowKey={r => r.taskid.toString()}
+        columns={columns}
+        dataSource={taskResp.items}
+        rowSelection={{
+          onChange: (_keys, selected) => setSelected(selected),
+        }}
+        pagination={{
+          pageSize: taskReq.count,
+          current: taskReq.offset / taskReq.count + 1,
+          total: taskResp.total,
+          showQuickJumper: true,
+          showSizeChanger: true,
+          onShowSizeChange: (_cur, np) => {
+            setTaskReq(e => ({
+              ...e,
+              count: np,
+              offset: 0,
+            }));
+          },
+          onChange: (page, pageSize) => {
             setTaskReq(e => ({
               ...e,
               count: pageSize,
               offset: (page - 1) * pageSize,
             }));
-            setPagination({ page, pageSize });
-          }}
-          pagination={pagination}
-        />
-      </div>
+          },
+        }}
+      />
     </RootLayout>
   );
 }

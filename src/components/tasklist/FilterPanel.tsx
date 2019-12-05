@@ -9,8 +9,8 @@ import styled from 'styled-components';
 type model = Omit<listReq, 'count' | 'offset'>;
 type Props = {
   products?: prodRep['data'];
-  versions: versionResp;
-  videos: videoResp;
+  versions: versionResp['data'];
+  videos: videoResp['data'];
   onFilterChange: (model: model) => void;
 };
 
@@ -61,7 +61,7 @@ export default function FilterPanel(props: Props) {
             onChange={(e: string[]) => setModel(v => ({ ...v, version: e }))}
             style={{ width: '100%' }}
           >
-            {props.versions.data.map(e => (
+            {props.versions.map(e => (
               <Select.Option key={e} value={e}>
                 {e}
               </Select.Option>
@@ -75,7 +75,7 @@ export default function FilterPanel(props: Props) {
             onChange={(e: string[]) => setModel(v => ({ ...v, video: e }))}
             style={{ width: '100%' }}
           >
-            {props.videos.data.map(e => (
+            {props.videos.map(e => (
               <Select.Option key={e} value={e}>
                 {e}
               </Select.Option>
