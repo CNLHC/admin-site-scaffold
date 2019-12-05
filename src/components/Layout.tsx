@@ -7,6 +7,7 @@ import ModalFormFPCAP from './create/fpcap';
 import { APICreateTask } from '../libs/API/create_task';
 import ModalFormRecog from './create/recog';
 import { APICreateRecogTask } from '../libs/API/create_recog_task';
+import { useRouter } from 'next/router';
 const { Content } = Layout;
 
 function MainLayout(props: {
@@ -15,6 +16,8 @@ function MainLayout(props: {
   const [collapse, setCollapse] = useState(false);
   const [fpcap, setFpcap] = useState(false);
   const [recog, setRecog] = useState(false);
+  const router = useRouter();
+
   return (
     <Layout style={{ minHeight: '100vh' }} hasSider>
       <ModalFormFPCAP
@@ -23,6 +26,7 @@ function MainLayout(props: {
           APICreateTask(e)
             .then(() => {
               message.success('创建成功');
+              router.replace('/tasklist');
               setFpcap(false);
             })
             .catch(() => message.error('创建失败'));
@@ -41,6 +45,7 @@ function MainLayout(props: {
             .then(() => {
               message.success('创建成功');
               setRecog(false);
+              router.replace('/tasklist');
             })
             .catch(() => message.error('创建失败'));
         }}

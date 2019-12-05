@@ -70,26 +70,6 @@ const Menu: TMenuItem[] = [
     route: 'report',
   },
   {
-    title: '创建任务',
-    key: 'createTask',
-    icon: 'edit',
-    route: '',
-    childItem: [
-      {
-        title: 'FP/抓拍任务',
-        key: 'createTaskFPCAP',
-        route: '',
-        childItem: [],
-      },
-      {
-        title: '识别任务',
-        key: 'createRecog',
-        route: '',
-        childItem: [],
-      },
-    ],
-  },
-  {
     title: 'QA资源',
     childItem: [],
     key: 'QAResource',

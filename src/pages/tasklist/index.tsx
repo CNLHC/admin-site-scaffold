@@ -25,6 +25,10 @@ import { useTypedSelector } from '../../libs/store';
 import { ACTGetProducts } from '../../libs/state/basic';
 import { useRouter } from 'next/router';
 import { APIDeleteTasks } from '../../libs/API/delete_task';
+import { APICreateRecogTask } from '../../libs/API/create_recog_task';
+import ModalFormRecog from '../../components/create/recog';
+import ModalFormFPCAP from '../../components/create/fpcap';
+import { APICreateTask } from '../../libs/API/create_task';
 
 type TData = Response['data']['items'][0];
 
@@ -66,6 +70,13 @@ function Page() {
   useEffect(() => {
     UpdateTaskList();
   }, [taskReq]);
+
+  useEffect(() => {
+    let handle = setInterval(() => UpdateTaskList(), 5000);
+    return () => {
+      clearInterval(handle);
+    };
+  }, []);
 
   useEffect(() => {
     Axios.get<TProdRep>(ProdAPI).then(res =>
@@ -152,10 +163,49 @@ function Page() {
   const columns = getColumns(Actions);
   const [deleteModal, setDeleteModal] = useState(false);
 
+  const [fpcap, setFpcap] = useState(false);
+  const [recog, setRecog] = useState(false);
+
   const [fakepass, setFakePass] = useState('');
 
   return (
     <RootLayout>
+      <ModalFormFPCAP
+        tasktype={['抓拍', 'FP']}
+        onSubmit={e => {
+          APICreateTask(e)
+            .then(() => {
+              message.success('创建成功');
+              UpdateTaskList();
+              setFpcap(false);
+            })
+            .catch(() => message.error('创建失败'));
+        }}
+        modal={{
+          title: '创建FP/抓拍任务',
+          visible: fpcap,
+          onOk: () => setFpcap(false),
+          onCancel: () => setFpcap(false),
+        }}
+      />
+      <ModalFormRecog
+        tasktype={['G3', 'B2R', 'DEV', 'NVR', 'Pandaeye', '车牌']}
+        onSubmit={e => {
+          APICreateRecogTask(e)
+            .then(() => {
+              message.success('创建成功');
+              setRecog(false);
+              UpdateTaskList();
+            })
+            .catch(() => message.error('创建失败'));
+        }}
+        modal={{
+          title: '创建识别任务',
+          visible: recog,
+          onOk: () => setRecog(false),
+          onCancel: () => setRecog(false),
+        }}
+      />
       <Modal
         title="输入密码确认删除"
         visible={deleteModal}
@@ -190,29 +240,43 @@ function Page() {
           onChange={e => setFakePass(e.target.value)}
         ></Input>
       </Modal>
-      <HBox>
-        <Form.Item>
-          <Button
-            onClick={() => setDeleteModal(true)}
-            type="danger"
-            style={{ marginRight: '1.5rem' }}
-            disabled={selected.length === 0}
-          >
-            删除
-          </Button>
-        </Form.Item>
 
-        <FilterPanel
-          products={products}
-          videos={videoResp}
-          versions={versionResp}
-          onFilterChange={model => {
-            setTaskReq(e => ({
-              ...e,
-              ...model,
-            }));
-          }}
-        />
+      <FilterPanel
+        products={products}
+        videos={videoResp}
+        versions={versionResp}
+        onFilterChange={model => {
+          setTaskReq(e => ({
+            ...e,
+            ...model,
+          }));
+        }}
+      />
+      <HBox style={{ marginTop: '1.5rem' }}>
+        <Button
+          onClick={() => setDeleteModal(true)}
+          type="danger"
+          disabled={selected.length === 0}
+          style={{ marginRight: '1.5rem', marginBottom: '1rem' }}
+        >
+          删除
+        </Button>
+        <Button.Group>
+          <Button
+            icon={'plus-circle'}
+            type={'primary'}
+            onClick={() => setFpcap(true)}
+          >
+            新建FP/抓拍任务
+          </Button>
+          <Button
+            icon={'plus-circle'}
+            type={'primary'}
+            onClick={() => setRecog(true)}
+          >
+            新建识别任务
+          </Button>
+        </Button.Group>
       </HBox>
       <Table
         rowKey={r => r.taskid.toString()}

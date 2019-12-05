@@ -198,7 +198,7 @@ function index({
           })(
             <RadioGroup>
               <Radio.Button value="hk">香港(10.169.1.234)</Radio.Button>
-              <Radio.Button value="tw">台湾(10.169.1.234)</Radio.Button>
+              <Radio.Button value="tw">台湾(10.169.1.236)</Radio.Button>
             </RadioGroup>
           )}
         </Form.Item>
