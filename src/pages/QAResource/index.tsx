@@ -17,6 +17,7 @@ import QAResourceFilterPanel from '../../components/QAResource/panel';
 import ModalFormQAResource from '../../components/QAResource/modalform';
 import { NewButton } from '../../components/Common/Button';
 import { APIUploadResource } from '../../libs/API/upload_resources';
+import { StaticRoot } from '../../libs/constant/conf';
 
 const ButtonBox = styled.div`
   display: flex;
@@ -25,6 +26,19 @@ const ButtonBox = styled.div`
 const HBox = styled.div`
   display: flex;
   justify-content: flex-start;
+`;
+const DownloadButton = styled(Button)`
+  background: #389e0d;
+  color: white;
+  &:hover {
+    color: black;
+    a {
+      color: black;
+    }
+  }
+  a {
+    color: white;
+  }
 `;
 type Data = Response['data'];
 const Columns: EditableTableColumnProps<Data[0]>[] = [
@@ -97,6 +111,10 @@ export default function index() {
             删除
           </Button>
         </Popconfirm>
+
+        <DownloadButton icon={'download'}>
+          <a href={`${StaticRoot}${record.fullpath}`}> 下载</a>
+        </DownloadButton>
       </ButtonBox>
     ) : (
       <ButtonBox>
