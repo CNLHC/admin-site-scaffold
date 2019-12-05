@@ -76,7 +76,7 @@ function Page() {
     return () => {
       clearInterval(handle);
     };
-  }, []);
+  }, [taskReq]);
 
   useEffect(() => {
     Axios.get<TProdRep>(ProdAPI).then(res =>
