@@ -28,6 +28,12 @@ const PartLayout = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+const HBox = styled.div`
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin: 1.5rem 3rem;
+`;
 
 export default function index() {
   const [data, setData] = useState<Response | undefined>(undefined);
@@ -105,7 +111,7 @@ export default function index() {
               }
             >
               更新关联
-            </Button>
+            </Button>{' '}
             <Button onClick={() => setPartLabel(undefined)}> 返回 </Button>
           </ButtonG>
         </PartLayout>
@@ -131,6 +137,17 @@ export default function index() {
             ))}
           </ImageRow>
         ))}
+
+        <HBox>
+          <Button.Group>
+            <Button onClick={() => router.push(`/tasklist/label?id=${id}`)}>
+              继续标注
+            </Button>
+            <Button onClick={() => router.push('/tasklist')} type={'primary'}>
+              确认提交
+            </Button>
+          </Button.Group>
+        </HBox>
       </MainLayout>
     );
 }
