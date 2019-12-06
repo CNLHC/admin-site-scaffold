@@ -6,7 +6,7 @@ import {
 } from '../../../libs/API/get_relationreview';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
-import { message, Button } from 'antd';
+import { message, Button, BackTop } from 'antd';
 import { ImageRow } from '../../../components/tasklist/Common';
 import ImageDiff from '../../../components/tasklist/ImageDiff';
 import { StaticRoot } from '../../../libs/constant/conf';
@@ -148,6 +148,7 @@ export default function index() {
             </Button>
           </Button.Group>
         </HBox>
+         <BackTop />
       </MainLayout>
     );
 }

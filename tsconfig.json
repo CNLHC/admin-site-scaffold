@@ -16,7 +16,8 @@
   },
   "exclude": ["node_modules"],
   "include": [
-    "jacinth.d.ts",
+    "src/jacinth.d.ts",
+    "server/jacinth.d.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",

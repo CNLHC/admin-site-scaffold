@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Col } from 'antd';
+import Img from 'react-image';
+import * as Fallback from '../../assets/fallback.jpg';
+
 const DiffCol = styled(Col)`
   padding: 0.5rem;
   display: flex;
@@ -28,10 +31,10 @@ export default function ImageDiff({ onClick, leftUrl, rightUrl }: TImageDiff) {
   return (
     <DiffCol onClick={onClick}>
       <DiffImgWrapper>
-        <img src={leftUrl} />
+        <Img src={[leftUrl, Fallback]} />
       </DiffImgWrapper>
       <DiffImgWrapper>
-        <img src={rightUrl} />
+        <Img src={[rightUrl, Fallback]} />
       </DiffImgWrapper>
     </DiffCol>
   );
