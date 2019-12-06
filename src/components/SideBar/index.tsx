@@ -8,11 +8,11 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 const searchRouteItem = (
-  ingredients: string[],
+  ingredients: string[] | null,
   menu: TMenuItem[],
   openCumu: string[] = []
 ) => {
-  const first = ingredients.shift();
+  const first = ingredients && ingredients.shift();
   if (first) {
     const Idx = menu.find(e => e.route === first);
     if (Idx !== undefined) {
@@ -88,7 +88,7 @@ export default (function SideBar({
     if (!collapse) {
       const openCumu: string[] = [];
       const select = searchRouteItem(
-        router.pathname.split('/').filter(e => e.length > 0),
+        router && router.pathname.split('/').filter(e => e.length > 0),
         MenuData,
         openCumu
       );
