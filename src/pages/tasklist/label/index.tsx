@@ -19,9 +19,10 @@ import LabelBox from '../../../components/tasklist/label/LabelBox';
 import { APICommit } from '../../../libs/API/commit';
 import { message, Modal } from 'antd';
 import { APIFilterCapture } from '../../../libs/API/filter_capture';
+import { withRedux } from '../../../libs/withRedux';
 
 type data = Response['data'];
-export default function index() {
+function index() {
   const [taskInfos, setTaskinfo] = useState<TaskInfo[]>([]);
   const [meta, setMeta] = useState<data | undefined>(undefined);
   const [allCap, setAllCap] = useState<string[]>();
@@ -83,3 +84,5 @@ export default function index() {
     </MainLayout>
   );
 }
+
+export default withRedux(index);

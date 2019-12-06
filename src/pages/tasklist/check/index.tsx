@@ -18,6 +18,8 @@ import {
 import styled from 'styled-components';
 import { APIDeleteLabel } from '../../../libs/API/delete_label';
 import { APICommit } from '../../../libs/API/commit';
+import { withRedux } from '../../../libs/withRedux';
+import { useTypedSelector } from '../../../libs/store';
 const ButtonG = styled.div`
   width: 60%;
   display: flex;
@@ -35,7 +37,7 @@ const HBox = styled.div`
   margin: 1.5rem 3rem;
 `;
 
-export default function index() {
+function index() {
   const [data, setData] = useState<Response | undefined>(undefined);
   const [all, setAll] = useState<AllResponse | undefined>(undefined);
   const [partLabel, setPartLabel] = useState<{
@@ -45,6 +47,7 @@ export default function index() {
   }>(undefined);
   const [partSelected, setPartSelected] = useState<string | undefined>();
   const router = useRouter();
+  const grid = useTypedSelector(e => e.GridSettingReducer);
   const id = router.query.id;
   const UpdateReview = id =>
     APIGetRelationReview(id)
@@ -70,7 +73,7 @@ export default function index() {
             base={partLabel.labelimg}
             candidates={_.chunk(
               all.data.map(e => e.capimg),
-              6
+              grid.rowSize
             )}
           />
           <ButtonG>
@@ -120,8 +123,8 @@ export default function index() {
   else
     return (
       <MainLayout>
-        {_.chunk(data.data.pairs, 5).map(es => (
-          <ImageRow style={{ height: '10rem' }}>
+        {_.chunk(data.data.pairs, grid.rowSize).map(es => (
+          <ImageRow rowHeight={grid.rowHeight}>
             {es.map(e => (
               <ImageDiff
                 onClick={() => {
@@ -148,7 +151,9 @@ export default function index() {
             </Button>
           </Button.Group>
         </HBox>
-         <BackTop />
+        <BackTop />
       </MainLayout>
     );
 }
+
+export default withRedux(index);

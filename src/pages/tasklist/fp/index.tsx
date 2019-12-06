@@ -21,6 +21,8 @@ import {
   CheckAbleImage,
 } from '../../../components/tasklist/Common';
 import { ColProps } from 'antd/lib/col';
+import { withRedux } from '../../../libs/withRedux';
+import { useTypedSelector } from '../../../libs/store';
 
 type data = Response['data'];
 
@@ -45,10 +47,11 @@ interface TImage {
 //   </ImageCol>
 // );
 
-export default function index() {
+function index() {
   const router = useRouter();
   const [data, setData] = useState<data>([]);
   const [checked, setSelected] = useState<{ [key: string]: data[0] }>({});
+  const grid = useTypedSelector(e => e.GridSettingReducer);
   useEffect(() => {
     const id = getId(router);
     if (id) {
@@ -59,11 +62,12 @@ export default function index() {
     <MainLayout>
       <VBox>
         <ImageArea>
-          {_.chunk(data, 5).map(e => (
-            <ImageRow style={{ height: '12rem' }}>
+          {_.chunk(data, grid.rowSize).map(e => (
+            <ImageRow rowHeight={grid.rowHeight}>
               {e.map(v => (
                 <CheckAbleImage
                   key={v.capimg}
+                  grid={grid}
                   imageUrl={v.capimg}
                   checked={checked[v.capimg] !== undefined}
                   onCheck={m => {
@@ -106,3 +110,5 @@ export default function index() {
     </MainLayout>
   );
 }
+
+export default withRedux(index);

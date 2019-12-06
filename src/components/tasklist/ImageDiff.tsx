@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Col } from 'antd';
 import Img from 'react-image';
-import * as Fallback from '../../assets/fallback.jpg';
+import Fallback from '../../assets/fallback.jpg';
 
 const DiffCol = styled(Col)`
   padding: 0.5rem;

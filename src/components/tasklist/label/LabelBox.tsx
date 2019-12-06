@@ -6,6 +6,7 @@ import { TaskInfo } from '../../../libs/API/get_relationalsdk';
 import { Request } from '../../../libs/API/commit';
 import { message, Button, Popover } from 'antd';
 import _ from 'lodash';
+import { useTypedSelector } from '../../../libs/store';
 
 const Root = styled.div`
   display: flex;
@@ -20,8 +21,19 @@ const Gallery = styled.div`
   align-items: center;
   width: 100%;
 `;
+const Base = styled.div`
+  display: flex;
+  justify-content: space-around;
+  height: 20rem;
+  img {
+    height: 100%;
+    width: auto;
+  }
+`;
 const Candidate = styled.div`
   width: 100%;
+  max-height: 40rem;
+  overflow-y: scroll;
 `;
 interface TLabelBox {
   taskinfo: TaskInfo;
@@ -36,12 +48,14 @@ const HBox = styled.div`
 export default function LabelBox({ taskinfo, onCommit, AllCap }: TLabelBox) {
   const [check, setCheck] = useState<string | undefined>(undefined);
   const [more, setMore] = useState(false);
+  const grid = useTypedSelector(e => e.GridSettingReducer);
   const AllRow = (
     <>
-      {_.chunk(AllCap, 5).map(es => (
-        <ImageRow style={{ height: '10rem' }}>
+      {_.chunk(AllCap, grid.rowSize).map(es => (
+        <ImageRow rowHeight={grid.rowHeight}>
           {es.map(e => (
             <CheckAbleImage
+              grid={grid}
               imageUrl={`${e}`}
               checked={check === e}
               onCheck={v => setCheck(e)}
@@ -53,19 +67,17 @@ export default function LabelBox({ taskinfo, onCommit, AllCap }: TLabelBox) {
   );
   const AutoRow = (
     <>
-      <ImageRow style={{ height: '10rem' }}>
+      <ImageRow rowHeight={grid.rowHeight}>
         {taskinfo.labelPic.map(e => (
           <>
             <CheckAbleImage
+              grid={grid}
               imageUrl={`${e.capPic}`}
               checked={check === e.capPic}
               onCheck={v => setCheck(e.capPic)}
               extra={{
                 title: '期望概率',
                 content: e.score.toString(),
-              }}
-              ColProps={{
-                span: 4,
               }}
             />
           </>
@@ -95,9 +107,9 @@ export default function LabelBox({ taskinfo, onCommit, AllCap }: TLabelBox) {
   return (
     <Root>
       <Gallery>
-        <ImageCol>
+        <Base>
           <img src={`${StaticRoot}${taskinfo.basePic}`} />
-        </ImageCol>
+        </Base>
         <Candidate>{taskinfo.labelPic.length > 0 ? AutoRow : AllRow}</Candidate>
       </Gallery>
       <SubmitButton
