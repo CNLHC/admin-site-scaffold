@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tag } from 'antd';
+import { Tag, Popover } from 'antd';
 import { Response } from '../../libs/API/tasklist';
 import { ColumnProps } from 'antd/lib/table';
 
@@ -17,6 +17,11 @@ export const getColumns: <T extends TData>(
     key: 'taskname',
     ellipsis: true,
     width: '15%',
+    render: (text, record) => (
+      <Popover title={'FTP地址'} content={<span>{record.ftpurl}</span>}>
+        <span>{text}</span>
+      </Popover>
+    ),
   },
   { dataIndex: 'tasktype', title: '方式', key: 'tasktype', width: '5%' },
   {
@@ -65,4 +70,3 @@ export const getColumns: <T extends TData>(
     render: (_text, record) => <Actions data={record} />,
   },
 ];
-
