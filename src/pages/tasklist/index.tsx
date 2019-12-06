@@ -311,4 +311,4 @@ function Page() {
   );
 }
 
-export default withAuthCheck(withRedux(Page));
+export default withRedux(withAuthCheck(Page));

@@ -18,6 +18,7 @@ import ModalFormQAResource from '../../components/QAResource/modalform';
 import { NewButton } from '../../components/Common/Button';
 import { APIUploadResource } from '../../libs/API/upload_resources';
 import { StaticRoot } from '../../libs/constant/conf';
+import { withRedux } from '../../libs/withRedux';
 
 const ButtonBox = styled.div`
   display: flex;
@@ -66,7 +67,7 @@ const Columns: EditableTableColumnProps<Data[0]>[] = [
   { dataIndex: 'size', title: '资源大小', key: 'size' },
 ];
 
-export default function index() {
+function index() {
   const [data, setData] = useState<Data>([]);
   const [payload, setPayload] = useState<Request>({
     type: '',
@@ -173,3 +174,5 @@ export default function index() {
     </MainLayout>
   );
 }
+
+export default withRedux(index)

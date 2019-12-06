@@ -2,6 +2,7 @@ import React from 'react';
 import App from 'next/app';
 import 'antd/dist/antd.css';
 import { CSRAuthStateCtx, getAuthState } from '../libs/auth/state';
+import { withRedux } from '../libs/withRedux';
 let __authState = false;
 
 class MyApp extends App {
@@ -15,4 +16,4 @@ class MyApp extends App {
   }
 }
 
-export default MyApp;
+export default withRedux(MyApp);
