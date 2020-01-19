@@ -10,15 +10,7 @@ declare module 'fastify' {
     HttpRequest = http.IncomingMessage,
     HttpResponse = http.ServerResponse
   > {
-    getJWTToken: (uid: string) => { token: string };
-    authBy: (m: TMiddleWare[]) => TMiddleWare;
-    authByJWT: TMiddleWare;
   }
   interface FastifyRequest {
-    user?: {
-      _id: string;
-      username: string;
-      password: string;
-    };
   }
 }
