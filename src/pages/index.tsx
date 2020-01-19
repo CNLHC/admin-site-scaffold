@@ -13,4 +13,4 @@ const Page = props => {
   return <MainLayout>{}</MainLayout>;
 };
 
-export default withAuthCheck(withRedux(Page));
+export default Page;

@@ -14,10 +14,9 @@ export type RootState = ReducerState<typeof reducer>;
 
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export const initializeStore = preloadedState => {
+export const initializeStore = ()=> {
   return createStore(
     reducer,
-    preloadedState,
     composeWithDevTools(applyMiddleware())
   );
 };
