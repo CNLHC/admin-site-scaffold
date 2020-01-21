@@ -16,7 +16,6 @@ import { APIListProduct } from '../../libs/API/productlist';
 import { withAuthCheck } from '../../libs/withCSRAuth';
 import { NewButton } from '../../components/Common/Button';
 import ModalFormCreateVersion from '../../components/workbench/productVersionManage';
-import { withRedux } from '../../libs/withRedux';
 import { Moment } from 'moment';
 import { APICreateVersions } from '../../libs/API/create_versions';
 import { UploadFile } from 'antd/lib/upload/interface';
@@ -127,7 +126,7 @@ function versionManage() {
     <MainLayout>
       <ModalFormCreateVersion
         onSubmit={e => {
-          let fd = new FormData();
+          const  fd = new FormData();
           Object.entries(e).forEach(([k, v]) => {
             if (k === 'releaseTime')
               fd.append(k, (v as Moment).format('YYYY-MM-DD'));
@@ -159,4 +158,4 @@ function versionManage() {
   );
 }
 
-export default withAuthCheck(withRedux(versionManage));
+export default withAuthCheck(versionManage);

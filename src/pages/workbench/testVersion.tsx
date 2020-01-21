@@ -6,7 +6,6 @@ import GetColumns from '../../components/workbench/testversion';
 import MainLayout from '../../components/Layout';
 import styled from 'styled-components';
 import { withAuthCheck } from '../../libs/withCSRAuth';
-import { withRedux } from '../../libs/withRedux';
 import ModalFormCreateTestVersion from '../../components/workbench/testversion/form';
 import { NewButton } from '../../components/Common/Button';
 import { Moment } from 'moment';
@@ -95,4 +94,4 @@ function testVersion() {
   );
 }
 
-export default withAuthCheck(withRedux(testVersion));
+export default withAuthCheck((testVersion));

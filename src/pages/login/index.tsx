@@ -39,7 +39,7 @@ const Page = ({ form }: FormProps) => {
     e.preventDefault();
     form.validateFields((err, value) => {
       if (err) return;
-      Axios.post('/api/login', value)
+      Axios.post('/api/auth/login', value)
         .then(res => {
           sessionStorage.setItem('jwt', res.data.token);
           Router.replace('/index');

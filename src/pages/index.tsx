@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import MainLayout from '../components/Layout';
-import { withRedux } from '../libs/withRedux';
 import { useRouter } from 'next/router';
 import { withAuthCheck } from '../libs/withCSRAuth';
 
@@ -13,4 +12,4 @@ const Page = props => {
   return <MainLayout>{}</MainLayout>;
 };
 
-export default Page;
+export default  withAuthCheck(Page);

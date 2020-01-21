@@ -3,6 +3,7 @@ import Axios from 'axios';
 import Router from 'next/router';
 import MainLayout from '../components/Layout';
 import { CSRAuthStateCtx, setAuthState } from './auth/state';
+import { AuthRequest } from './auth/method';
 
 export const withAuthCheck = PageComponent => {
   const Wrapper = (props: any) => {
@@ -11,15 +12,11 @@ export const withAuthCheck = PageComponent => {
     const authState = getState();
 
     const checkAuth = useCallback(jwt => {
-      Axios.post(
-        '/api/check',
-        {},
-        {
-          headers: {
-            auth: jwt,
-          },
-        }
-      )
+      AuthRequest({
+        data:{token:sessionStorage.getItem("jwt")},
+        url: 'api/auth/verify',
+        method: "POST"
+      })
         .then(() => {
           setAuthState(true);
           return setAuth(true);
