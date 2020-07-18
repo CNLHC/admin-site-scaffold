@@ -18,7 +18,7 @@
     "fastify-jwt": "^1.2.0",
     "fastify-mongodb": "^2.0.0",
     "immer": "^5.0.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "mongodb": "^3.3.4",
     "react": "^16.12.0",
     "react-csv": "^1.1.2",
