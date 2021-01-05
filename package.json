@@ -11,7 +11,7 @@
     "@types/react-truncate": "^2.3.3",
     "@types/styled-components": "^4.4.0",
     "antd": "^3.25.1",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "debounce": "^1.2.0",
     "fastify": "^2.10.0",
     "fastify-auth": "^0.6.0",
