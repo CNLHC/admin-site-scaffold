@@ -17,7 +17,7 @@
     "fastify-auth": "^0.6.0",
     "fastify-jwt": "^1.2.0",
     "fastify-mongodb": "^2.0.0",
-    "immer": "^5.0.0",
+    "immer": "^8.0.1",
     "lodash": "^4.17.15",
     "mongodb": "^3.3.4",
     "react": "^16.12.0",
